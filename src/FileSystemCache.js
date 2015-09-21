@@ -1,3 +1,4 @@
+"use strict"
 import R from "ramda";
 import * as f from "./funcs";
 
@@ -21,5 +22,22 @@ export default class FileSystemCache {
     this.basePath = formatPath(basePath);
     this.ns = f.hash(ns);
     if (f.isFileSync(this.basePath)) { throw new Error(`The basePath '${ this.basePath }' is a file. It should be a folder.`); }
+  }
+
+  /**
+   * Generates the path to the cached files.
+   * @param {string} key: The key of the cache item.
+   * @param {options}
+   *              - extension: A file extension to apply.
+   * @return {string}.
+   */
+  path(key, { extension } = {}) {
+    if (f.isNothing(key)) { throw new Error(`Path requires a cache key.`); }
+    let name = f.hash(key);
+    if (this.ns) { name = `${ this.ns }-${ name }`; }
+    if (extension) {
+      name = `${ name }.${ extension.replace(/^\./, "") }`;
+    }
+    return `${ this.basePath }/${ name }`;
   }
 }
