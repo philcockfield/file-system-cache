@@ -1,5 +1,7 @@
 "use strict"
 import R from "ramda";
+import Promise from "bluebird";
+import fs from "fs-extra";
 import * as f from "./funcs";
 
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
@@ -31,13 +33,52 @@ export default class FileSystemCache {
    *              - extension: A file extension to apply.
    * @return {string}.
    */
-  path(key, { extension } = {}) {
+  path(key, options = {}) {
     if (f.isNothing(key)) { throw new Error(`Path requires a cache key.`); }
     let name = f.hash(key);
     if (this.ns) { name = `${ this.ns }-${ name }`; }
-    if (extension) {
-      name = `${ name }.${ extension.replace(/^\./, "") }`;
+    if (R.is(String, options.extension)) {
+      name = `${ name }.${ options.extension.replace(/^\./, "") }`;
     }
     return `${ this.basePath }/${ name }`;
+  }
+
+
+  /**
+   * Ensure that the base path exists.
+   */
+  ensureBasePath() {
+    return new Promise((resolve, reject) => {
+      if (this.basePathExists) {
+        resolve();
+      } else {
+        fs.ensureDir(this.basePath, (err) => {
+          if (err) {
+            reject(err);
+          } else {
+            this.basePathExists = true;
+            resolve();
+          }
+        });
+      }
+    });
+  }
+
+
+  /**
+   * Writes the given value to the file-system and memory cache.
+   */
+  set(key, value, options = {}) {
+    const path = this.path(key, options);
+    return new Promise((resolve, reject) => {
+      this.ensureBasePath()
+      .then(() => {
+          fs.writeJson(path, { value: value }, (err) => {
+            if (err) { reject(err); } else { resolve({ path }); }
+          });
+      })
+      .catch(err => reject(err));
+    });
+
   }
 }

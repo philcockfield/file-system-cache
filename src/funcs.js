@@ -18,7 +18,11 @@ export const isFileSync = (path) => {
   return false;
 };
 
-
+export const readFileSync = (path) => {
+  if (fs.existsSync(path)) {
+    return fs.readFileSync(path).toString()
+  }
+};
 
 /**
  * Turns a set of values into a HEX hash code.
