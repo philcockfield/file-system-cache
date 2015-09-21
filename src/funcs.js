@@ -9,6 +9,7 @@ export const toStringArray = R.pipe(compact, R.map(R.toString));
 export const ensureString = R.curry((defaultValue, text) => R.is(String, text) ? text : defaultValue);
 export const toAbsolutePath = (path) => path.startsWith(".") ? fsPath.resolve(path) : path;
 export const isNothing = (value) => R.isNil(value) || R.isEmpty(value);
+export const isString = R.is(String);
 
 
 export const isFileSync = (path) => {

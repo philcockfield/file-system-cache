@@ -85,10 +85,13 @@ describe("FileSystemCache", function() {
 
     it("returns a path with a file extension", () => {
       const key = "foo";
-      const cache = new FileSystemCache({ basePath: BASE_PATH });
       const path = `${ ABSOLUTE_BASE_PATH }/${ f.hash(key) }.styl`;
-      expect(cache.path(key, { extension: "styl" })).to.equal(path);
-      expect(cache.path(key, { extension: ".styl" })).to.equal(path);
+      let cache;
+      cache = new FileSystemCache({ basePath: BASE_PATH, extension: "styl" });
+      expect(cache.path(key)).to.equal(path);
+
+      cache = new FileSystemCache({ basePath: BASE_PATH, extension: ".styl" });
+      expect(cache.path(key)).to.equal(path);
     });
   });
 
@@ -111,7 +114,52 @@ describe("FileSystemCache", function() {
 
   describe("get/set", function() {
     describe("get", function() {
-      it.skip("does not exist on the file-system", () => {});
+      it("file not exist on the file-system", (done) => {
+        const cache = new FileSystemCache({ basePath: BASE_PATH });
+        cache.get("foo")
+        .then(result => {
+            expect(result).to.equal(undefined);
+            done();
+        })
+        .catch(err => console.error(err));
+      });
+
+      it("reads a stored values (various types)", (done) => {
+        const cache1 = new FileSystemCache({ basePath: BASE_PATH });
+        const cache2 = new FileSystemCache({ basePath: BASE_PATH });
+        cache1.set("text", "my value");
+        cache1.set("number", 123);
+        cache1.set("object", { foo: 456 })
+        .then(() => {
+          cache2.get("text")
+          .then(result => expect(result).to.equal("my value"))
+          .then(() => {
+            cache2.get("number").then(result => expect(result).to.equal(123))
+          })
+          .then(() => {
+            cache2.get("object").then(result => expect(result).to.eql({ foo: 456 }))
+          })
+          .finally(() => done())
+          .catch(err => console.error(err));
+        })
+      });
+
+
+      it("reads a stored date", (done) => {
+        const cache1 = new FileSystemCache({ basePath: BASE_PATH });
+        const cache2 = new FileSystemCache({ basePath: BASE_PATH });
+        const now = new Date();
+        cache1.set("date", now)
+        .then(() => {
+          cache2.get("date")
+          .then(result => {
+              expect(result).to.eql(now);
+              done();
+          })
+          .catch(err => console.error(err));
+        })
+      });
+
     });
 
 
