@@ -12,7 +12,7 @@ const ABSOLUTE_BASE_PATH = fsPath.resolve(BASE_PATH);
 describe("FileSystemCache", function() {
   const deleteFolder = () => fs.removeSync(ABSOLUTE_BASE_PATH);
   beforeEach(() => deleteFolder());
-  // afterEach(() => deleteFolder());
+  afterEach(() => deleteFolder());
 
 
   describe("basePath", function() {
