@@ -5,6 +5,8 @@ import fs from "fs-extra";
 import * as f from "./funcs";
 
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
+const PRIVATE_REMOVE_PATH = Symbol("removePath");
+const PRIVATE_FILE_EXISTS_PATH = Symbol("existsPath");
 
 
 /**
@@ -44,6 +46,21 @@ export default class FileSystemCache {
   }
 
 
+  /**
+   * Determines whether the file exists.
+   * @param {string} key: The key of the cache item.
+   * @return {Promise}
+   */
+  fileExists(key) { return this[PRIVATE_FILE_EXISTS_PATH](this.path(key)); }
+
+
+  [PRIVATE_FILE_EXISTS_PATH](path) {
+    return new Promise((resolve, reject) => {
+      fs.exists(path, (exists) => resolve(exists));
+    });
+  }
+
+
 
   /**
    * Ensure that the base path exists.
@@ -69,6 +86,7 @@ export default class FileSystemCache {
 
   /**
    * Gets the contents of the file with the given key.
+   * @param {string} key: The key of the cache item.
    * @return {Promise} - File contents, or
    *                     Undefined if the file does not exist.
    */
@@ -87,17 +105,19 @@ export default class FileSystemCache {
               if (type === "Date") { value = new Date(value); }
               resolve(value);
             }
-          })
+          });
     });
   }
 
 
   /**
    * Writes the given value to the file-system and memory cache.
+   * @param {string} key: The key of the cache item.
+   * @param value: The value to write (Primitive or Object).
    * @return {Promise}
    */
-  set(key, value, options = {}) {
-    const path = this.path(key, options);
+  set(key, value) {
+    const path = this.path(key);
     return new Promise((resolve, reject) => {
       this.ensureBasePath()
       .then(() => {
@@ -105,11 +125,34 @@ export default class FileSystemCache {
             value,
             type: R.type(value)
           }
-          fs.writeJson(path, json, (err) => {
+          fs.outputFile(path, JSON.stringify(json), (err) => {
             if (err) { reject(err); } else { resolve({ path }); }
           });
       })
       .catch(err => reject(err));
     });
   }
+
+
+  [PRIVATE_REMOVE_PATH](path) {
+    return new Promise((resolve, reject) => {
+      this[PRIVATE_FILE_EXISTS_PATH](path)
+      .then((exists) => {
+        if (exists) {
+          fs.remove(path, (err, result) => {
+            if (err) { reject(err); } else { resolve(); }
+          })
+        } else {
+          resolve();
+        }
+      })
+    });
+  }
+
+  /**
+   * Removes the item from the file-system.
+   * @param {string} key: The key of the cache item.
+   * @return {Promise}
+   */
+  remove(key) { return this[PRIVATE_REMOVE_PATH](this.path(key)); }
 }

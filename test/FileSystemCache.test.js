@@ -192,4 +192,25 @@ describe("FileSystemCache", function() {
       });
     });
   });
+
+  describe("remove", function() {
+    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    beforeEach((done) => cache.set("foo", "my-text").then(() => done()));
+
+    it("removes the file from the file-system", (done) => {
+      expect(f.isFileSync(cache.path("foo"))).to.equal(true);
+      cache.remove("foo")
+      .then(() => {
+          expect(f.isFileSync(cache.path("foo"))).to.equal(false);
+          done();
+      })
+      .catch(err => console.error(err));
+    });
+
+    it("does nothing if the key does not exist", (done) => {
+      cache.remove("foobar")
+      .then(() => done())
+      .catch(err => { throw err });
+    });
+  });
 });
