@@ -25,6 +25,28 @@ export const readFileSync = (path) => {
   }
 };
 
+export const fileExistsP = (path) => {
+  return new Promise((resolve, reject) => {
+    fs.exists(path, (exists) => resolve(exists));
+  });
+};
+
+export const removeFileP = (path) => {
+  return new Promise((resolve, reject) => {
+    fileExistsP(path)
+    .then((exists) => {
+      if (exists) {
+        fs.remove(path, (err, result) => {
+          if (err) { reject(err); } else { resolve(); }
+        })
+      } else {
+        resolve();
+      }
+    })
+  });
+};
+
+
 /**
  * Turns a set of values into a HEX hash code.
  * @param values: The set of values to hash.

@@ -4,9 +4,9 @@ import Promise from "bluebird";
 import fs from "fs-extra";
 import * as f from "./funcs";
 
+
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
-const PRIVATE_REMOVE_PATH = Symbol("removePath");
-const PRIVATE_FILE_EXISTS_PATH = Symbol("existsPath");
+
 
 
 /**
@@ -51,15 +51,7 @@ export default class FileSystemCache {
    * @param {string} key: The key of the cache item.
    * @return {Promise}
    */
-  fileExists(key) { return this[PRIVATE_FILE_EXISTS_PATH](this.path(key)); }
-
-
-  [PRIVATE_FILE_EXISTS_PATH](path) {
-    return new Promise((resolve, reject) => {
-      fs.exists(path, (exists) => resolve(exists));
-    });
-  }
-
+  fileExists(key) { return f.fileExistsP(this.path(key)); }
 
 
   /**
@@ -134,25 +126,44 @@ export default class FileSystemCache {
   }
 
 
-  [PRIVATE_REMOVE_PATH](path) {
-    return new Promise((resolve, reject) => {
-      this[PRIVATE_FILE_EXISTS_PATH](path)
-      .then((exists) => {
-        if (exists) {
-          fs.remove(path, (err, result) => {
-            if (err) { reject(err); } else { resolve(); }
-          })
-        } else {
-          resolve();
-        }
-      })
-    });
-  }
-
   /**
    * Removes the item from the file-system.
    * @param {string} key: The key of the cache item.
    * @return {Promise}
    */
-  remove(key) { return this[PRIVATE_REMOVE_PATH](this.path(key)); }
+  remove(key) { return f.removeFileP(this.path(key)); }
+
+
+  /**
+   * Removes all items from the cache.
+   * @return {Promise}
+   */
+  clear() {
+    return new Promise((resolve, reject) => {
+      fs.readdir(this.basePath, (err, fileNames) => {
+        if (err) {
+          reject(err)
+        } else {
+          const paths = R.pipe(
+              f.compact,
+              R.filter((name) => this.ns ? name.startsWith(this.ns) : true),
+              R.filter((name) => !this.ns ? !R.contains("-")(name) : true),
+              R.map(name => `${ this.basePath }/${ name }`)
+          )(fileNames);
+
+          const remove = (index) => {
+              const path = paths[index];
+              if (path) {
+                f.removeFileP(path)
+                .then(() => remove(index + 1)) // <== RECURSION
+                .catch(err => reject(err));
+              } else {
+                resolve() // All files have been removed.
+              }
+          };
+          remove(0)
+        }
+      })
+    });
+  }
 }

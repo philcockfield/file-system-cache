@@ -12,7 +12,7 @@ const ABSOLUTE_BASE_PATH = fsPath.resolve(BASE_PATH);
 describe("FileSystemCache", function() {
   const deleteFolder = () => fs.removeSync(ABSOLUTE_BASE_PATH);
   beforeEach(() => deleteFolder());
-  afterEach(() => deleteFolder());
+  // afterEach(() => deleteFolder());
 
 
   describe("basePath", function() {
@@ -194,8 +194,11 @@ describe("FileSystemCache", function() {
   });
 
   describe("remove", function() {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
-    beforeEach((done) => cache.set("foo", "my-text").then(() => done()));
+    let cache;
+    beforeEach((done) => {
+      cache = new FileSystemCache({ basePath: BASE_PATH });
+      cache.set("foo", "my-text").then(() => done());
+    });
 
     it("removes the file from the file-system", (done) => {
       expect(f.isFileSync(cache.path("foo"))).to.equal(true);
@@ -212,5 +215,58 @@ describe("FileSystemCache", function() {
       .then(() => done())
       .catch(err => { throw err });
     });
+  });
+
+
+  describe("clear", function() {
+    it("clears all items (no namespace)", (done) => {
+      const cache = new FileSystemCache({ basePath: BASE_PATH });
+      cache.set("foo", "my-text")
+      .then(() => cache.set("bar", { foo: 123 }))
+      .then(() => {
+          expect(fs.readdirSync(cache.basePath).length).to.equal(2);
+          cache.clear()
+          .then(result => {
+              expect(fs.readdirSync(cache.basePath).length).to.equal(0);
+              done();
+          })
+          .catch(err => console.error(err));
+      });
+    });
+
+    describe("with namespace", function() {
+      it("clears all items without namespace - protects non-namespace items", (done) => {
+        const cache1 = new FileSystemCache({ basePath: BASE_PATH });
+        const cache2 = new FileSystemCache({ basePath: BASE_PATH, ns: "My Namespace" });
+        cache1.set("foo", "my-text")
+        .then(() => cache2.set("foo", "my-text")) // Different value because of NS.
+        .then(() => {
+            expect(fs.readdirSync(cache1.basePath).length).to.equal(2);
+            cache1.clear()
+            .then(result => {
+                expect(fs.readdirSync(cache1.basePath).length).to.equal(1);
+                done();
+            })
+            .catch(err => console.error(err));
+        });
+      });
+
+      it("clears all items with namespace - protects namespace items", (done) => {
+        const cache1 = new FileSystemCache({ basePath: BASE_PATH });
+        const cache2 = new FileSystemCache({ basePath: BASE_PATH, ns: "My Namespace" });
+        cache1.set("foo", "my-text")
+        .then(() => cache2.set("foo", "my-text")) // Different value because of NS.
+        .then(() => {
+            expect(fs.readdirSync(cache1.basePath).length).to.equal(2);
+            cache2.clear()
+            .then(result => {
+                expect(fs.readdirSync(cache1.basePath).length).to.equal(1);
+                done();
+            })
+            .catch(err => console.error(err));
+        });
+      });
+    });
+
   });
 });
