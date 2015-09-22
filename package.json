@@ -1,6 +1,6 @@
 {
   "name": "cache-fs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "main": "./lib/index.js",
   "dependencies": {
