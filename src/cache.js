@@ -12,6 +12,23 @@ const toGetValue = (data) => {
   return value;
 };
 
+const getValueP = (path) => {
+    return new Promise((resolve, reject) => {
+          fs.readJson(path, (err, result) => {
+            if (err) {
+              if (err.code === "ENOENT") {
+                resolve(undefined);
+              } else {
+                reject(err);
+              }
+            } else {
+              const value = toGetValue(result);
+              resolve(value);
+            }
+          });
+    });
+};
+
 const toJson = (value) => { return JSON.stringify({ value, type: R.type(value) })};
 
 
@@ -58,7 +75,7 @@ export default class FileSystemCache {
    * @param {string} key: The key of the cache item.
    * @return {Promise}
    */
-  fileExists(key) { return f.fileExistsP(this.path(key)); }
+  fileExists(key) { return f.existsP(this.path(key)); }
 
 
   /**
@@ -89,23 +106,7 @@ export default class FileSystemCache {
    * @return {Promise} - File contents, or
    *                     Undefined if the file does not exist.
    */
-  get(key) {
-    return new Promise((resolve, reject) => {
-          const path = this.path(key);
-          fs.readJson(path, (err, result) => {
-            if (err) {
-              if (err.code === "ENOENT") {
-                resolve(undefined);
-              } else {
-                reject(err);
-              }
-            } else {
-              const value = toGetValue(result);
-              resolve(value);
-            }
-          });
-    });
-  }
+  get(key) { return getValueP(this.path(key)); }
 
 
   /**
@@ -167,17 +168,8 @@ export default class FileSystemCache {
    */
   clear() {
     return new Promise((resolve, reject) => {
-      fs.readdir(this.basePath, (err, fileNames) => {
-        if (err) {
-          reject(err)
-        } else {
-          const paths = R.pipe(
-              f.compact,
-              R.filter((name) => this.ns ? name.startsWith(this.ns) : true),
-              R.filter((name) => !this.ns ? !R.contains("-")(name) : true),
-              R.map(name => `${ this.basePath }/${ name }`)
-          )(fileNames);
-
+      f.filePathsP(this.basePath, this.ns)
+      .then(paths => {
           const remove = (index) => {
               const path = paths[index];
               if (path) {
@@ -188,9 +180,9 @@ export default class FileSystemCache {
                 resolve() // All files have been removed.
               }
           };
-          remove(0)
-        }
+          remove(0);
       })
+      .catch(err => reject(err));
     });
   }
 
@@ -236,6 +228,42 @@ export default class FileSystemCache {
             }
         };
         setValue(0)
+    });
+  }
+
+
+  /**
+   * Loads all files witin the cache's namespace.
+   */
+  load() {
+    return new Promise((resolve, reject) => {
+      f.filePathsP(this.basePath, this.ns)
+      .then(paths => {
+          // Bail out if there are no paths in the folder.
+          const response = { files: [] };
+          if (paths.length === 0) {
+            resolve(response);
+            return;
+          }
+
+          // Get each value.
+          const getValue = (index) => {
+            const path = paths[index];
+            if (path) {
+              getValueP(path)
+              .then(result => {
+                  response.files[index] = { path, value: result };
+                  getValue(index + 1); // <== RECURSION.
+              })
+              .catch(err => reject(err));
+            } else {
+              // All paths have been loaded.
+              resolve(response);
+            }
+          };
+          getValue(0);
+      })
+      .catch(err => reject(err));
     });
   }
 }

@@ -25,7 +25,7 @@ export const readFileSync = (path) => {
   }
 };
 
-export const fileExistsP = (path) => {
+export const existsP = (path) => {
   return new Promise((resolve, reject) => {
     fs.exists(path, (exists) => resolve(exists));
   });
@@ -33,7 +33,7 @@ export const fileExistsP = (path) => {
 
 export const removeFileP = (path) => {
   return new Promise((resolve, reject) => {
-    fileExistsP(path)
+    existsP(path)
     .then((exists) => {
       if (exists) {
         fs.remove(path, (err, result) => {
@@ -43,6 +43,29 @@ export const removeFileP = (path) => {
         resolve();
       }
     })
+  });
+};
+
+
+export const filePathsP = (basePath, ns) => {
+  return new Promise((resolve, reject) => {
+      existsP(basePath)
+      .then(exists => {
+          if (!exists) { resolve([]); return; }
+          fs.readdir(basePath, (err, fileNames) => {
+            if (err) {
+              reject(err)
+            } else {
+              const paths = R.pipe(
+                  compact,
+                  R.filter((name) => ns ? name.startsWith(ns) : true),
+                  R.filter((name) => !ns ? !R.contains("-")(name) : true),
+                  R.map(name => `${ basePath }/${ name }`)
+              )(fileNames);
+              resolve(paths);
+            }
+          });
+      });
   });
 };
 
