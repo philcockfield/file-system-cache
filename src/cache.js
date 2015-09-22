@@ -4,7 +4,6 @@ import Promise from "bluebird";
 import fs from "fs-extra";
 import * as f from "./funcs";
 
-
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
 
 
@@ -164,6 +163,30 @@ export default class FileSystemCache {
           remove(0)
         }
       })
+    });
+  }
+
+
+  /**
+   * Saves several items to the cache in one operation.
+   * @param {array} items: An array of objects of the form { key, value }.
+   * @return {Promise}
+   */
+  save(items) {
+    if (!R.is(Array, items)) { items = [items]; }
+    const isValidItem = (item) => {
+      if (!R.is(Object, item)) { return false; }
+      return item.key && item.value;
+    };
+    items = R.pipe(
+      R.reject(R.isNil),
+      R.forEach((item) => { if (!isValidItem(item)) { throw new Error(`Save items not valid, must be an array of {key, value} objects.`); }})
+      // R.forEach(item => { if (!isValidItem(item)) throw new Error(`Items to save must be of the shape {key, value}.` })
+    )(items)
+    console.log("-------------------------------------------");
+    console.log("items", items);
+    return new Promise((resolve, reject) => {
+
     });
   }
 }

@@ -1,13 +1,12 @@
 import { expect } from "chai";
 import CacheFs from "../src";
-import FileSystemCache from "../src/FileSystemCache";
-
-const BASE_PATH = "./test/samples/main";
+import FileSystemCache from "../src/cache";
 
 
-describe("Main API", function() {
+
+describe("Module entry API", function() {
   it("creates an instance of [FileSystemCache]", () => {
-    const cache = CacheFs({ basePath: BASE_PATH });
+    const cache = CacheFs();
     expect(cache).to.be.an.instanceof(FileSystemCache);
   });
 });

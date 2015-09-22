@@ -1,3 +1,2 @@
-"use strict"
-import FileSystemCache from "./FileSystemCache";
+import FileSystemCache from "./cache";
 export default (options) => new FileSystemCache(options);
