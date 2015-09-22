@@ -1,7 +1,7 @@
 # cache-fs
 [![Build Status](https://travis-ci.org/philcockfield/cache-fs.svg)](https://travis-ci.org/philcockfield/cache-fs)
 
-A promise-based cache that reads and writes to the file-system.
+A super-fast, promise-based cache that reads and writes to the file-system.
 
 
 ## Run

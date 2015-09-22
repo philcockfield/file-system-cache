@@ -1,7 +1,7 @@
 {
   "name": "cache-fs",
   "version": "0.0.3",
-  "description": "A super-fast, promise based cache that reads and writes to the file-system.",
+  "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "main": "./lib/index.js",
   "dependencies": {
     "bluebird": "^2.10.0",

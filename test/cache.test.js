@@ -50,7 +50,6 @@ describe("FileSystemCache", function() {
       expect(cache.ns).to.equal(f.hash("foo"));
     });
 
-
     it("creates a namespace hash with several values", () => {
       const cache = new FileSystemCache({ ns:["foo", 123] });
       expect(cache.ns).to.equal(f.hash("foo", 123));

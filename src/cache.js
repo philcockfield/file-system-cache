@@ -6,6 +6,12 @@ import * as f from "./funcs";
 
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
 
+const processGetValue = (data) => {
+  let { value, type } = data;
+  if (type === "Date") { value = new Date(value); }
+  return value;
+};
+
 
 
 /**
@@ -92,12 +98,21 @@ export default class FileSystemCache {
                 reject(err);
               }
             } else {
-              let { value, type } = result;
-              if (type === "Date") { value = new Date(value); }
+              const value = processGetValue(result);
               resolve(value);
             }
           });
     });
+  }
+
+
+  /**
+   * Gets the contents of the file with the given key.
+   * @param {string} key: The key of the cache item.
+   * @return the cached value, or undefined.
+   */
+  getSync(key) {
+    return processGetValue(fs.readJsonSync(this.path(key)));
   }
 
 
@@ -173,20 +188,41 @@ export default class FileSystemCache {
    * @return {Promise}
    */
   save(items) {
+    // Setup initial conditions.
     if (!R.is(Array, items)) { items = [items]; }
-    const isValidItem = (item) => {
-      if (!R.is(Object, item)) { return false; }
-      return item.key && item.value;
-    };
+    const isValid = (item) => {
+        if (!R.is(Object, item)) { return false; }
+        return item.key && item.value;
+      };
     items = R.pipe(
-      R.reject(R.isNil),
-      R.forEach((item) => { if (!isValidItem(item)) { throw new Error(`Save items not valid, must be an array of {key, value} objects.`); }})
-      // R.forEach(item => { if (!isValidItem(item)) throw new Error(`Items to save must be of the shape {key, value}.` })
-    )(items)
-    console.log("-------------------------------------------");
-    console.log("items", items);
-    return new Promise((resolve, reject) => {
+        R.reject(R.isNil),
+        R.forEach((item) => { if (!isValid(item)) { throw new Error(`Save items not valid, must be an array of {key, value} objects.`); }})
+    )(items);
 
+    return new Promise((resolve, reject) => {
+        // Don't continue if no items were passed.
+        const response = { paths: [] };
+        if (items.length === 0) {
+          resolve(response);
+          return;
+        }
+
+        // Recursively set each item to the file-system.
+        const setValue = (index) => {
+            const item = items[index];
+            if (item) {
+              this.set(item.key, item.value)
+              .then(result => {
+                  response.paths[index] = result.path
+                  setValue(index + 1); // <== RECURSION.
+              })
+              .catch(err => reject(err));
+            } else {
+              // No more items - done.
+              resolve(response);
+            }
+        };
+        setValue(0)
     });
   }
 }

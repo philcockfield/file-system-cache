@@ -55,4 +55,17 @@ describe("get", function() {
       .catch(err => console.error(err));
     })
   });
+
+  it("getSync: reads a value synchonously", (done) => {
+    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const now = new Date();
+    cache.set("date", now)
+    .then(() => {
+        const result = cache.getSync("date");
+        expect(cache.getSync("date")).to.eql(now);
+        done();
+    })
+    .catch(err => console.error(err));
+  });
+
 });
