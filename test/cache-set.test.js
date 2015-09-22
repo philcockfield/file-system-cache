@@ -36,4 +36,11 @@ describe("set", function() {
     })
     .catch(err => console.error(err));
   });
+
+  it("setSync: saves a value synchonously", () => {
+    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const result = cache.setSync("foo", { text: "sync" });
+    expect(result).to.equal(cache);
+    expect(cache.getSync("foo")).to.eql({ text: "sync" });
+  });
 });

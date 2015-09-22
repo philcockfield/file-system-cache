@@ -5,8 +5,7 @@ import fsPath from "path";
 import FileSystemCache from "../src/cache";
 import * as f from "../src/funcs";
 
-const BASE_PATH = "./test/samples/FileSystemCache";
-const ABSOLUTE_BASE_PATH = fsPath.resolve(BASE_PATH);
+const BASE_PATH = "./test/samples/save";
 
 
 

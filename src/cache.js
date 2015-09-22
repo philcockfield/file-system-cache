@@ -6,11 +6,13 @@ import * as f from "./funcs";
 
 const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
 
-const processGetValue = (data) => {
+const toGetValue = (data) => {
   let { value, type } = data;
   if (type === "Date") { value = new Date(value); }
   return value;
 };
+
+const toJson = (value) => { return JSON.stringify({ value, type: R.type(value) })};
 
 
 
@@ -98,7 +100,7 @@ export default class FileSystemCache {
                 reject(err);
               }
             } else {
-              const value = processGetValue(result);
+              const value = toGetValue(result);
               resolve(value);
             }
           });
@@ -112,7 +114,10 @@ export default class FileSystemCache {
    * @return the cached value, or undefined.
    */
   getSync(key) {
-    return processGetValue(fs.readJsonSync(this.path(key)));
+    const path = this.path(key);
+    if (fs.existsSync(path)) {
+      return toGetValue(fs.readJsonSync(path));
+    }
   }
 
 
@@ -127,16 +132,24 @@ export default class FileSystemCache {
     return new Promise((resolve, reject) => {
       this.ensureBasePath()
       .then(() => {
-          const json = {
-            value,
-            type: R.type(value)
-          }
-          fs.outputFile(path, JSON.stringify(json), (err) => {
+          fs.outputFile(path, toJson(value), (err) => {
             if (err) { reject(err); } else { resolve({ path }); }
           });
       })
       .catch(err => reject(err));
     });
+  }
+
+
+  /**
+   * Writes the given value to the file-system and memory cache.
+   * @param {string} key: The key of the cache item.
+   * @param value: The value to write (Primitive or Object).
+   * @return the cache.
+   */
+  setSync(key, value) {
+    fs.outputFileSync(this.path(key), toJson(value));
+    return this;
   }
 
 
