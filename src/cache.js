@@ -4,7 +4,7 @@ import Promise from "bluebird";
 import fs from "fs-extra";
 import * as f from "./funcs";
 
-const formatPath = R.pipe(f.ensureString("./.build"), f.toAbsolutePath);
+const formatPath = R.pipe(f.ensureString("./.cache"), f.toAbsolutePath);
 
 const toGetValue = (data) => {
   let { value, type } = data;

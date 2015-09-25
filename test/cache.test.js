@@ -9,12 +9,13 @@ const BASE_PATH = "./test/samples/cache";
 const ABSOLUTE_BASE_PATH = fsPath.resolve(BASE_PATH);
 
 
+
 describe("FileSystemCache", function() {
 
   describe("basePath", function() {
-    it("has a default path of '/.build'", () => {
+    it("has a default path of '/.cache'", () => {
       const cache = new FileSystemCache();
-      expect(cache.basePath).to.equal(fsPath.resolve("./.build"));
+      expect(cache.basePath).to.equal(fsPath.resolve("./.cache"));
     });
 
     it("resolves the path if the path starts with ('.')", () => {
