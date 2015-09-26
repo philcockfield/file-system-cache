@@ -16,7 +16,7 @@ it("clears all items (no namespace)", (done) => {
   .then(() => {
       expect(fs.readdirSync(cache.basePath).length).to.equal(2);
       cache.clear()
-      .then(result => {
+      .then(() => {
           expect(fs.readdirSync(cache.basePath).length).to.equal(0);
           done();
       })

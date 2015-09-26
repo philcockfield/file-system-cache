@@ -123,7 +123,7 @@ export default class FileSystemCache {
 
 
   /**
-   * Writes the given value to the file-system and memory cache.
+   * Writes the given value to the file-system.
    * @param {string} key: The key of the cache item.
    * @param value: The value to write (Primitive or Object).
    * @return {Promise}
@@ -233,7 +233,7 @@ export default class FileSystemCache {
 
 
   /**
-   * Loads all files witin the cache's namespace.
+   * Loads all files within the cache's namespace.
    */
   load() {
     return new Promise((resolve, reject) => {
