@@ -30,7 +30,7 @@
     "url": "https://github.com/philcockfield/file-system-cache"
   },
   "keywords": [
-    "cache,fs"
+    "cache,fs,file-system"
   ],
   "author": {
     "name": "Phil Cockfield",
