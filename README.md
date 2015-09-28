@@ -1,19 +1,19 @@
-# cache-fs
-[![Build Status](https://travis-ci.org/philcockfield/cache-fs.svg)](https://travis-ci.org/philcockfield/cache-fs)
+# file-system-cache
+[![Build Status](https://travis-ci.org/philcockfield/file-system-cache.svg)](https://travis-ci.org/philcockfield/file-system-cache)
 
 A super-fast, promise-based cache that reads and writes to the file-system.
 
 
 ## Installation
 
-    npm install --save cache-fs
+    npm install --save file-system-cache
 
 ## Usage (API)
 
 Create an instance of the cache optionally giving it a folder location to store files within.
 
 ```js
-import Cache from "cache-fs";
+import Cache from "file-system-cache";
 
 const cache = Cache({
   basePath: "./.cache", // Optional. Path where cache files are stored (default).
