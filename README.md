@@ -24,7 +24,7 @@ const cache = Cache({
 The optional `ns` ("namespace") allows for multiple groupings of files to reside within the one cache folder.  When you have multiple caches with different namespaces you can re-use the same keys and they will not collide.
 
 
-#### get(key)
+#### get(key, defaultValue)
 Retrieves the contents of a cached file.
 
 ```js

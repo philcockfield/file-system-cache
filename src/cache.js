@@ -12,12 +12,12 @@ const toGetValue = (data) => {
   return value;
 };
 
-const getValueP = (path) => {
+const getValueP = (path, defaultValue) => {
     return new Promise((resolve, reject) => {
           fs.readJson(path, (err, result) => {
             if (err) {
               if (err.code === "ENOENT") {
-                resolve(undefined);
+                resolve(defaultValue);
               } else {
                 reject(err);
               }
@@ -103,22 +103,24 @@ export default class FileSystemCache {
   /**
    * Gets the contents of the file with the given key.
    * @param {string} key: The key of the cache item.
+   * @param defaultValue: Optional. A default value to return if the value does not exist in cache.
    * @return {Promise} - File contents, or
-   *                     Undefined if the file does not exist.
+   *                     undefined if the file does not exist.
    */
-  get(key) { return getValueP(this.path(key)); }
+  get(key, defaultValue) { return getValueP(this.path(key), defaultValue); }
 
 
   /**
    * Gets the contents of the file with the given key.
    * @param {string} key: The key of the cache item.
+   * @param defaultValue: Optional. A default value to return if the value does not exist in cache.
    * @return the cached value, or undefined.
    */
-  getSync(key) {
+  getSync(key, defaultValue) {
     const path = this.path(key);
-    if (fs.existsSync(path)) {
-      return toGetValue(fs.readJsonSync(path));
-    }
+    return fs.existsSync(path)
+        ? toGetValue(fs.readJsonSync(path))
+        : defaultValue;
   }
 
 

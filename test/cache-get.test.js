@@ -20,6 +20,14 @@ describe("get", function() {
     .catch(err => console.error(err));
   });
 
+  it("gets a default value", () => {
+    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    return cache.get("foo", { myDefault: 123 })
+      .then(result => {
+        expect(result).to.eql({ myDefault: 123 });
+      })
+  });
+
   it("reads a stored values (various types)", (done) => {
     const cache1 = new FileSystemCache({ basePath: BASE_PATH });
     const cache2 = new FileSystemCache({ basePath: BASE_PATH });
@@ -56,16 +64,23 @@ describe("get", function() {
     })
   });
 
-  it("getSync: reads a value synchonously", (done) => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
-    const now = new Date();
-    cache.set("date", now)
-    .then(() => {
-        const result = cache.getSync("date");
-        expect(cache.getSync("date")).to.eql(now);
-        done();
-    })
-    .catch(err => console.error(err));
-  });
+  describe("getSync", function() {
+    it("reads a value synchonously", (done) => {
+      const cache = new FileSystemCache({ basePath: BASE_PATH });
+      const now = new Date();
+      cache.set("date", now)
+      .then(() => {
+          const result = cache.getSync("date");
+          expect(cache.getSync("date")).to.eql(now);
+          done();
+      })
+      .catch(err => console.error(err));
+    });
 
+    it("returns a default value synchonously", () => {
+      const cache = new FileSystemCache({ basePath: BASE_PATH });
+      const result = cache.getSync("my-sync-value", { myDefault: 123 });
+      expect(result).to.eql({ myDefault: 123 });
+    });
+  });
 });

@@ -2,6 +2,7 @@ import R from "ramda";
 import fs from "fs-extra";
 import fsPath from "path";
 import crypto from "crypto";
+import Promise from "bluebird";
 
 
 export const compact = R.pipe(R.flatten, R.reject(R.isNil));
