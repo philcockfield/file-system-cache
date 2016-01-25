@@ -1,2 +1,2 @@
-import FileSystemCache from "./cache";
+import FileSystemCache from './cache';
 export default (options) => new FileSystemCache(options);
