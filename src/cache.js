@@ -1,35 +1,34 @@
-"use strict"
-import R from "ramda";
-import Promise from "bluebird";
-import fs from "fs-extra";
-import * as f from "./funcs";
+'use strict'
+import R from 'ramda';
+import Promise from 'bluebird';
+import fs from 'fs-extra';
+import * as f from './funcs';
 
-const formatPath = R.pipe(f.ensureString("./.cache"), f.toAbsolutePath);
+const formatPath = R.pipe(f.ensureString('./.cache'), f.toAbsolutePath);
 
 const toGetValue = (data) => {
-  let { value, type } = data;
-  if (type === "Date") { value = new Date(value); }
+  const { type } = data;
+  let { value } = data;
+  if (type === 'Date') { value = new Date(value); }
   return value;
 };
 
-const getValueP = (path, defaultValue) => {
-    return new Promise((resolve, reject) => {
-          fs.readJson(path, (err, result) => {
-            if (err) {
-              if (err.code === "ENOENT") {
-                resolve(defaultValue);
-              } else {
-                reject(err);
-              }
-            } else {
-              const value = toGetValue(result);
-              resolve(value);
-            }
-          });
-    });
-};
+const getValueP = (path, defaultValue) => new Promise((resolve, reject) => {
+  fs.readJson(path, (err, result) => {
+    if (err) {
+      if (err.code === 'ENOENT') {
+        resolve(defaultValue);
+      } else {
+        reject(err);
+      }
+    } else {
+      const value = toGetValue(result);
+      resolve(value);
+    }
+  });
+});
 
-const toJson = (value) => { return JSON.stringify({ value, type: R.type(value) })};
+const toJson = (value) => JSON.stringify({ value, type: R.type(value) });
 
 
 
@@ -41,7 +40,7 @@ export default class FileSystemCache {
    * Constructor.
    * @param options
    *            - basePath:   The folder path to read/write to.
-   *                          Default: "./build"
+   *                          Default: './build'
    *            - ns:         A single value, or array, that represents a
    *                          a unique namespace within which values for this
    *                          store are cached.
@@ -51,7 +50,9 @@ export default class FileSystemCache {
     this.basePath = formatPath(basePath);
     this.ns = f.hash(ns);
     if (f.isString(extension)) { this.extension = extension; }
-    if (f.isFileSync(this.basePath)) { throw new Error(`The basePath '${ this.basePath }' is a file. It should be a folder.`); }
+    if (f.isFileSync(this.basePath)) {
+      throw new Error(`The basePath '${ this.basePath }' is a file. It should be a folder.`);
+    }
   }
 
   /**
@@ -64,7 +65,7 @@ export default class FileSystemCache {
     let name = f.hash(key);
     if (this.ns) { name = `${ this.ns }-${ name }`; }
     if (this.extension) {
-      name = `${ name }.${ this.extension.replace(/^\./, "") }`;
+      name = `${ name }.${ this.extension.replace(/^\./, '') }`;
     }
     return `${ this.basePath }/${ name }`;
   }
@@ -119,8 +120,8 @@ export default class FileSystemCache {
   getSync(key, defaultValue) {
     const path = this.path(key);
     return fs.existsSync(path)
-        ? toGetValue(fs.readJsonSync(path))
-        : defaultValue;
+      ? toGetValue(fs.readJsonSync(path))
+      : defaultValue;
   }
 
 
@@ -135,9 +136,9 @@ export default class FileSystemCache {
     return new Promise((resolve, reject) => {
       this.ensureBasePath()
       .then(() => {
-          fs.outputFile(path, toJson(value), (err) => {
-            if (err) { reject(err); } else { resolve({ path }); }
-          });
+        fs.outputFile(path, toJson(value), (err) => {
+          if (err) { reject(err); } else { resolve({ path }); }
+        });
       })
       .catch(err => reject(err));
     });
@@ -171,20 +172,20 @@ export default class FileSystemCache {
   clear() {
     return new Promise((resolve, reject) => {
       f.filePathsP(this.basePath, this.ns)
-      .then(paths => {
+        .then(paths => {
           const remove = (index) => {
-              const path = paths[index];
-              if (path) {
-                f.removeFileP(path)
-                .then(() => remove(index + 1)) // <== RECURSION
-                .catch(err => reject(err));
-              } else {
-                resolve() // All files have been removed.
-              }
+            const path = paths[index];
+            if (path) {
+              f.removeFileP(path)
+              .then(() => remove(index + 1)) // <== RECURSION.
+              .catch(err => reject(err));
+            } else {
+              resolve(); // All files have been removed.
+            }
           };
           remove(0);
-      })
-      .catch(err => reject(err));
+        })
+        .catch(err => reject(err));
     });
   }
 
@@ -198,38 +199,42 @@ export default class FileSystemCache {
     // Setup initial conditions.
     if (!R.is(Array, items)) { items = [items]; }
     const isValid = (item) => {
-        if (!R.is(Object, item)) { return false; }
-        return item.key && item.value;
-      };
+      if (!R.is(Object, item)) { return false; }
+      return item.key && item.value;
+    };
     items = R.pipe(
-        R.reject(R.isNil),
-        R.forEach((item) => { if (!isValid(item)) { throw new Error(`Save items not valid, must be an array of {key, value} objects.`); }})
+      R.reject(R.isNil),
+      R.forEach((item) => {
+        if (!isValid(item)) {
+          throw new Error(`Save items not valid, must be an array of {key, value} objects.`);
+        }
+      })
     )(items);
 
     return new Promise((resolve, reject) => {
-        // Don't continue if no items were passed.
-        const response = { paths: [] };
-        if (items.length === 0) {
-          resolve(response);
-          return;
-        }
+      // Don't continue if no items were passed.
+      const response = { paths: [] };
+      if (items.length === 0) {
+        resolve(response);
+        return;
+      }
 
-        // Recursively set each item to the file-system.
-        const setValue = (index) => {
-            const item = items[index];
-            if (item) {
-              this.set(item.key, item.value)
-              .then(result => {
-                  response.paths[index] = result.path
-                  setValue(index + 1); // <== RECURSION.
-              })
-              .catch(err => reject(err));
-            } else {
-              // No more items - done.
-              resolve(response);
-            }
-        };
-        setValue(0)
+      // Recursively set each item to the file-system.
+      const setValue = (index) => {
+        const item = items[index];
+        if (item) {
+          this.set(item.key, item.value)
+          .then(result => {
+            response.paths[index] = result.path;
+            setValue(index + 1); // <== RECURSION.
+          })
+          .catch(err => reject(err));
+        } else {
+          // No more items - done.
+          resolve(response);
+        }
+      };
+      setValue(0);
     });
   }
 
@@ -240,7 +245,7 @@ export default class FileSystemCache {
   load() {
     return new Promise((resolve, reject) => {
       f.filePathsP(this.basePath, this.ns)
-      .then(paths => {
+        .then(paths => {
           // Bail out if there are no paths in the folder.
           const response = { files: [] };
           if (paths.length === 0) {
@@ -254,8 +259,8 @@ export default class FileSystemCache {
             if (path) {
               getValueP(path)
               .then(result => {
-                  response.files[index] = { path, value: result };
-                  getValue(index + 1); // <== RECURSION.
+                response.files[index] = { path, value: result };
+                getValue(index + 1); // <== RECURSION.
               })
               .catch(err => reject(err));
             } else {
@@ -264,8 +269,8 @@ export default class FileSystemCache {
             }
           };
           getValue(0);
-      })
-      .catch(err => reject(err));
+        })
+        .catch(err => reject(err));
     });
   }
 }

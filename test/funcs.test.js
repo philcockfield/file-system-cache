@@ -3,7 +3,7 @@ import { expect } from "chai";
 import * as f from "../src/funcs";
 
 
-describe("util", function() {
+describe("util.hash", function() {
   it("does not hash 'nothing' (undefined)", () => {
     expect(f.hash()).to.equal(undefined);
     expect(f.hash(null)).to.equal(undefined);
