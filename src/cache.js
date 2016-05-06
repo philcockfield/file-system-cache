@@ -1,4 +1,3 @@
-'use strict'
 import R from 'ramda';
 import Promise from 'bluebird';
 import fs from 'fs-extra';
