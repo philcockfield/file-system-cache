@@ -12,15 +12,15 @@
     "prepublish": "npm test && npm run lint && npm run build"
   },
   "dependencies": {
-    "bluebird": "^3.1.4",
-    "fs-extra": "^0.26.4",
-    "ramda": "^0.19.1"
+    "bluebird": "^3.3.5",
+    "fs-extra": "^0.30.0",
+    "ramda": "^0.21.0"
   },
   "devDependencies": {
     "chai": "^3.4.1",
-    "js-babel": "^6.0.0",
-    "js-babel-dev": "^6.0.0",
-    "mocha": "^2.3.4"
+    "js-babel": "^6.0.4",
+    "js-babel-dev": "^6.0.5",
+    "mocha": "^2.4.5"
   },
   "repository": {
     "type": "git",
