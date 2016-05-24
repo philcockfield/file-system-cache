@@ -12,6 +12,7 @@
     "prepublish": "npm test && npm run lint && npm run build"
   },
   "dependencies": {
+    "babel-polyfill": "^6.9.0",
     "bluebird": "^3.3.5",
     "fs-extra": "^0.30.0",
     "ramda": "^0.21.0"
