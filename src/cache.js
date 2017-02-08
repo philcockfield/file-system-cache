@@ -175,14 +175,14 @@ export default class FileSystemCache {
           const remove = (index) => {
             const path = paths[index];
             if (path) {
-              f.removeFileP(path)
-              .then(() => remove(index + 1)) // <== RECURSION.
-              .catch(err => reject(err));
+              return f.removeFileP(path)
+                .then(() => remove(index + 1)) // <== RECURSION.
+                .catch(err => reject(err));
             } else {
-              resolve(); // All files have been removed.
+              return Promise.resolve(); // All files have been removed.
             }
           };
-          remove(0);
+          return remove(0);
         })
         .catch(err => reject(err));
     });
