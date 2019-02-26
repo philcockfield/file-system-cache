@@ -21,6 +21,9 @@ const cache = Cache({
 });
 ```
 
+> Reference `default` for CommonJS, e.g: `const Cache = require('file-system-cache').default
+`
+
 The optional `ns` ("namespace") allows for multiple groupings of files to reside within the one cache folder.  When you have multiple caches with different namespaces you can re-use the same keys and they will not collide.
 
 
