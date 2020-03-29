@@ -44,7 +44,7 @@ cache.set("foo", "...value...")
   .then(result => /* Success */)
 ```
 
-Value types are stored and respected on subsequent calls to `get`.  For examples, passing in Object will return that in it's parsed object state.
+Value types are stored and respected on subsequent calls to `get`.  For examples, passing in Object will return that in its parsed object state.
 
 Use `setSync` for a synchronous version.
 
