@@ -1,4 +1,7 @@
 {
+    "env": {
+        "mocha": true
+    },
     "plugins": [
         "mocha"
     ]
