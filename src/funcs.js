@@ -27,6 +27,7 @@ export const readFileSync = (path) => {
   if (fs.existsSync(path)) {
     return fs.readFileSync(path).toString();
   }
+  throw new Error(`The file '${path}' does not exist.`);
 };
 
 
