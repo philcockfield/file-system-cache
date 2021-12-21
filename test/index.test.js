@@ -1,11 +1,11 @@
-import { expect } from "chai";
-import CacheFs from "../src";
-import FileSystemCache from "../src/cache";
+import { expect } from 'chai';
+import CacheFs from '../src';
+import FileSystemCache from '../src/cache';
 
 
 
-describe("Module entry API", function() {
-  it("creates an instance of [FileSystemCache]", () => {
+describe('Module entry API', () => {
+  it('creates an instance of [FileSystemCache]', () => {
     const cache = new CacheFs();
     expect(cache).to.be.an.instanceof(FileSystemCache);
   });

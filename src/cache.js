@@ -50,7 +50,7 @@ export default class FileSystemCache {
     this.ns = f.hash(ns);
     if (f.isString(extension)) { this.extension = extension; }
     if (f.isFileSync(this.basePath)) {
-      throw new Error(`The basePath '${ this.basePath }' is a file. It should be a folder.`);
+      throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
     }
   }
 
@@ -60,13 +60,13 @@ export default class FileSystemCache {
    * @return {string}.
    */
   path(key) {
-    if (f.isNothing(key)) { throw new Error(`Path requires a cache key.`); }
+    if (f.isNothing(key)) { throw new Error('Path requires a cache key.'); }
     let name = f.hash(key);
-    if (this.ns) { name = `${ this.ns }-${ name }`; }
+    if (this.ns) { name = `${this.ns}-${name}`; }
     if (this.extension) {
-      name = `${ name }.${ this.extension.replace(/^\./, '') }`;
+      name = `${name}.${this.extension.replace(/^\./, '')}`;
     }
-    return `${ this.basePath }/${ name }`;
+    return `${this.basePath}/${name}`;
   }
 
 
@@ -134,12 +134,12 @@ export default class FileSystemCache {
     const path = this.path(key);
     return new Promise((resolve, reject) => {
       this.ensureBasePath()
-      .then(() => {
-        fs.outputFile(path, toJson(value), (err) => {
-          if (err) { reject(err); } else { resolve({ path }); }
-        });
-      })
-      .catch(err => reject(err));
+        .then(() => {
+          fs.outputFile(path, toJson(value), (err) => {
+            if (err) { reject(err); } else { resolve({ path }); }
+          });
+        })
+        .catch((err) => reject(err));
     });
   }
 
@@ -171,20 +171,20 @@ export default class FileSystemCache {
   clear() {
     return new Promise((resolve, reject) => {
       f.filePathsP(this.basePath, this.ns)
-        .then(paths => {
+        .then((paths) => {
           const remove = (index) => {
             const path = paths[index];
             if (path) {
               f.removeFileP(path)
-              .then(() => remove(index + 1)) // <== RECURSION.
-              .catch(err => reject(err));
+                .then(() => remove(index + 1)) // <== RECURSION.
+                .catch((err) => reject(err));
             } else {
               resolve(); // All files have been removed.
             }
           };
           remove(0);
         })
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   }
 
@@ -205,9 +205,9 @@ export default class FileSystemCache {
       R.reject(R.isNil),
       R.forEach((item) => {
         if (!isValid(item)) {
-          throw new Error(`Save items not valid, must be an array of {key, value} objects.`);
+          throw new Error('Save items not valid, must be an array of {key, value} objects.');
         }
-      })
+      }),
     )(items);
 
     return new Promise((resolve, reject) => {
@@ -223,11 +223,11 @@ export default class FileSystemCache {
         const item = items[index];
         if (item) {
           this.set(item.key, item.value)
-          .then(result => {
-            response.paths[index] = result.path;
-            setValue(index + 1); // <== RECURSION.
-          })
-          .catch(err => reject(err));
+            .then((result) => {
+              response.paths[index] = result.path;
+              setValue(index + 1); // <== RECURSION.
+            })
+            .catch((err) => reject(err));
         } else {
           // No more items - done.
           resolve(response);
@@ -244,7 +244,7 @@ export default class FileSystemCache {
   load() {
     return new Promise((resolve, reject) => {
       f.filePathsP(this.basePath, this.ns)
-        .then(paths => {
+        .then((paths) => {
           // Bail out if there are no paths in the folder.
           const response = { files: [] };
           if (paths.length === 0) {
@@ -257,11 +257,11 @@ export default class FileSystemCache {
             const path = paths[index];
             if (path) {
               getValueP(path)
-              .then(result => {
-                response.files[index] = { path, value: result };
-                getValue(index + 1); // <== RECURSION.
-              })
-              .catch(err => reject(err));
+                .then((result) => {
+                  response.files[index] = { path, value: result };
+                  getValue(index + 1); // <== RECURSION.
+                })
+                .catch((err) => reject(err));
             } else {
               // All paths have been loaded.
               resolve(response);
@@ -269,7 +269,7 @@ export default class FileSystemCache {
           };
           getValue(0);
         })
-        .catch(err => reject(err));
+        .catch((err) => reject(err));
     });
   }
 }

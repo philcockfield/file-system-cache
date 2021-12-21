@@ -9,9 +9,9 @@ export const isNothing = (value) => R.isNil(value) || R.isEmpty(value);
 export const isString = R.is(String);
 export const compact = R.pipe(R.flatten, R.reject(R.isNil));
 export const toStringArray = R.pipe(compact, R.map(R.toString));
-export const toAbsolutePath = (path) => path.startsWith('.') ? fsPath.resolve(path) : path;
+export const toAbsolutePath = (path) => (path.startsWith('.') ? fsPath.resolve(path) : path);
 export const ensureString = R.curry(
-  (defaultValue, text) => R.is(String, text) ? text : defaultValue
+  (defaultValue, text) => (R.is(String, text) ? text : defaultValue),
 );
 
 
@@ -51,7 +51,7 @@ export const removeFileP = (path) => new Promise((resolve, reject) => {
 
 export const filePathsP = (basePath, ns) => new Promise((resolve, reject) => {
   existsP(basePath)
-    .then(exists => {
+    .then((exists) => {
       if (!exists) { resolve([]); return; }
       fs.readdir(basePath, (err, fileNames) => {
         if (err) {
@@ -59,9 +59,9 @@ export const filePathsP = (basePath, ns) => new Promise((resolve, reject) => {
         } else {
           const paths = R.pipe(
             compact,
-            R.filter((name) => ns ? name.startsWith(ns) : true),
-            R.filter((name) => !ns ? !R.contains('-')(name) : true),
-            R.map(name => `${ basePath }/${ name }`)
+            R.filter((name) => (ns ? name.startsWith(ns) : true)),
+            R.filter((name) => (!ns ? !R.contains('-')(name) : true)),
+            R.map((name) => `${basePath}/${name}`),
           )(fileNames);
           resolve(paths);
         }
@@ -78,11 +78,11 @@ export const filePathsP = (basePath, ns) => new Promise((resolve, reject) => {
 export const hash = (...values) => {
   if (R.pipe(compact, R.isEmpty)(values)) { return undefined; }
   const resultHash = crypto.createHash('md5');
-  const addValue = value => resultHash.update(value);
+  const addValue = (value) => resultHash.update(value);
   const addValues = R.forEach(addValue);
   R.pipe(
     toStringArray,
-    addValues
+    addValues,
   )(values);
   return resultHash.digest('hex');
 };
