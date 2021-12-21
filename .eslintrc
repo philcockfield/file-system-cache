@@ -4,6 +4,8 @@
   "rules": {
     "no-multiple-empty-lines": 0,
     "no-param-reassign": 0,
-    "padded-blocks": 0
+    "padded-blocks": 0,
+    "no-unused-vars": 0,
+    "no-new": 0
   }
 }
