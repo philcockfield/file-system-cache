@@ -46,7 +46,7 @@ export const removeFileP = (path) => new Promise((resolve, reject) => {
       } else {
         resolve();
       }
-    });
+    }).catch((e) => reject(e)).finally(() => null);
 });
 
 
