@@ -183,6 +183,7 @@ export default class FileSystemCache {
             }
           };
           remove(0);
+          return null;
         })
         .catch((err) => reject(err));
     });
@@ -226,6 +227,7 @@ export default class FileSystemCache {
             .then((result) => {
               response.paths[index] = result.path;
               setValue(index + 1); // <== RECURSION.
+              return null;
             })
             .catch((err) => reject(err));
         } else {
@@ -260,6 +262,7 @@ export default class FileSystemCache {
                 .then((result) => {
                   response.files[index] = { path, value: result };
                   getValue(index + 1); // <== RECURSION.
+                  return null;
                 })
                 .catch((err) => reject(err));
             } else {
