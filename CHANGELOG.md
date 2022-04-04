@@ -13,6 +13,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [1.1.0] - 2021-04-04
+#### Changed
+- bumped the ramda depedency version to resolve [ReDos](https://security.snyk.io/vuln/SNYK-JS-RAMDA-1582370)
+
 
 ## [1.0.3] - 2016-01-26
 #### Changed
