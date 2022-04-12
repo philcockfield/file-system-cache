@@ -4,5 +4,8 @@
     },
     "plugins": [
         "mocha"
-    ]
+    ],
+    "rules": {
+        "no-console": "off"
+    }
 }

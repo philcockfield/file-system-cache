@@ -7,5 +7,6 @@
     "padded-blocks": 0,
     "no-unused-vars": 0,
     "no-new": 0
-  }
+  },
+  "ignorePatterns": ["lib/**/*"]
 }
