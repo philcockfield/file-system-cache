@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/index.js"],"names":["FileSystemCache"],"mappings":";;;;;;AAAA;;;;;;kBAEeA,e","file":"index.js","sourcesContent":["import FileSystemCache from './cache';\n\nexport default FileSystemCache;\n"]}
