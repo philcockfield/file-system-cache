@@ -32,6 +32,9 @@ jobs:
       - name: Build lib
         run: npm run build
       
+      - name: Add lib files
+        run: git add lib/**
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: Lib build files
