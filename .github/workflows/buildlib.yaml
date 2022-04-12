@@ -1,0 +1,39 @@
+name: Unit tests & Build
+
+on: ["push", "pull_request"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: v16.13.1
+
+      - name: npm ci
+        run: npm ci
+
+      - name: run lint
+        uses: wearerequired/lint-action@v1.7.0
+        continue-on-error: true
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          eslint: true
+          auto_fix: true
+      
+      - name: test
+        run: npm test
+      
+      # After test succeeds, build and commit
+      - name: Build lib
+        run: npm run build
+      
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Lib build files
+          add_options: '-u'
+          commit_options: --no-verify
