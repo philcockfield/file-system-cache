@@ -1,10 +1,8 @@
-import { expect, fs, Util, FileSystemCache } from './common';
-
-const BASE_PATH = './test/samples/set';
+import { expect, fs, Util, FileSystemCache, basePath } from './common';
 
 describe('set', function () {
   it('saves a string to the file-system', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const path = cache.path('foo');
     const value = 'my value';
     expect(fs.existsSync(path)).to.equal(false);
@@ -15,7 +13,7 @@ describe('set', function () {
   });
 
   it('saves an object to the file-system', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const value = { text: 'hello', number: 123 };
 
     const res = await cache.set('foo', value);
@@ -26,7 +24,7 @@ describe('set', function () {
   });
 
   it('setSync: saves a value synchonously', () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const result = cache.setSync('foo', { text: 'sync' });
     expect(result).to.equal(cache);
     expect(cache.getSync('foo')).to.eql({ text: 'sync' });

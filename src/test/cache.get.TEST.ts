@@ -1,24 +1,22 @@
-import { expect, FileSystemCache } from './common';
-
-const BASE_PATH = './test/samples/get';
+import { expect, FileSystemCache, basePath } from './common';
 
 describe('get', function () {
   it('file not exist on the file-system', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const res = await cache.get('foo');
     expect(res).to.eql(undefined);
   });
 
   it('gets a default value', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     return cache.get('foo', { myDefault: 123 }).then((result) => {
       expect(result).to.eql({ myDefault: 123 });
     });
   });
 
   it('reads a stored values (various types)', (done) => {
-    const cache1 = new FileSystemCache({ basePath: BASE_PATH });
-    const cache2 = new FileSystemCache({ basePath: BASE_PATH });
+    const cache1 = new FileSystemCache({ basePath });
+    const cache2 = new FileSystemCache({ basePath });
     cache1.set('text', 'my value');
     cache1.set('number', 123);
     cache1.set('object', { foo: 456 }).then(() => {
@@ -37,8 +35,8 @@ describe('get', function () {
   });
 
   it('reads a stored date', (done) => {
-    const cache1 = new FileSystemCache({ basePath: BASE_PATH });
-    const cache2 = new FileSystemCache({ basePath: BASE_PATH });
+    const cache1 = new FileSystemCache({ basePath });
+    const cache2 = new FileSystemCache({ basePath });
     const now = new Date();
     cache1.set('date', now).then(() => {
       cache2
@@ -53,7 +51,7 @@ describe('get', function () {
 
   describe('getSync', function () {
     it('reads a value synchonously', (done) => {
-      const cache = new FileSystemCache({ basePath: BASE_PATH });
+      const cache = new FileSystemCache({ basePath });
       const now = new Date();
       cache
         .set('date', now)
@@ -65,7 +63,7 @@ describe('get', function () {
     });
 
     it('returns a default value synchonously', () => {
-      const cache = new FileSystemCache({ basePath: BASE_PATH });
+      const cache = new FileSystemCache({ basePath });
       const result = cache.getSync('my-sync-value', { myDefault: 123 });
       expect(result).to.eql({ myDefault: 123 });
     });

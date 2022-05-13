@@ -13,15 +13,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
-## [2.0.0] - YYYY-MM-DD
-#### Added
+## [2.0.0] - 2022-05-14
 #### Changed
 - Converted project to Typescript
-- Update refs (ramda), thanks to @shernaz
-#### Deprecated
-#### Removed
 #### Fixed
-#### Security
+- Update refs (ramda), thanks to @shernaz
 
 
 ## [1.1.0] - 2021-04-04

@@ -1,11 +1,12 @@
 import { expect } from 'chai';
-import { FileSystemCache, fs, fsPath, Util } from '../cache';
+import { fs, fsPath, Util } from '../common';
+import { FileSystemCache } from '..';
 
 export { FileSystemCache, fs, fsPath, Util, expect };
 
-export const BASE_PATH = './test/samples';
+export const basePath = './.tmp';
 
-const deleteFolder = () => fs.removeSync(fsPath.resolve(BASE_PATH));
+const deleteFolder = () => fs.removeSync(fsPath.resolve(basePath));
 beforeEach(() => deleteFolder());
 afterEach(() => deleteFolder());
 

@@ -1,10 +1,8 @@
-import { expectError, FileSystemCache, fs, expect } from './common';
-
-const BASE_PATH = './test/samples/save';
+import { expectError, FileSystemCache, fs, expect, basePath } from './common';
 
 describe('save', function () {
   it('throws if items not valid', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
 
     await expectError(() => cache.save([{}] as any));
     await expectError(() => cache.save([{ key: 1 }] as any));
@@ -12,13 +10,13 @@ describe('save', function () {
   });
 
   it('resolves immediately if an empty array was passed', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const res = await cache.save([]);
     expect(res.paths.length).to.eql(0);
   });
 
   it('saves several files', async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
 
     const payload = [
       { key: 'one', value: 'value-1' },

@@ -1,10 +1,8 @@
-import { expect, fs, FileSystemCache } from './common';
-
-const BASE_PATH = './test/samples/get';
+import { expect, fs, FileSystemCache, basePath } from './common';
 
 describe('clear', function () {
   it('clears all items (no namespace)', (done) => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     const readdir = () => fs.readdirSync(cache.basePath);
     cache
       .set('foo', 'my-text')
@@ -23,8 +21,8 @@ describe('clear', function () {
 
   describe('with namespace', function () {
     it('clears all items without namespace - protects non-namespace items', (done) => {
-      const cache1 = new FileSystemCache({ basePath: BASE_PATH });
-      const cache2 = new FileSystemCache({ basePath: BASE_PATH, ns: 'My Namespace' });
+      const cache1 = new FileSystemCache({ basePath });
+      const cache2 = new FileSystemCache({ basePath, ns: 'My Namespace' });
       cache1
         .set('foo', 'my-text')
         .then(() => cache2.set('foo', 'my-text')) // Different value because of NS.
@@ -41,8 +39,8 @@ describe('clear', function () {
     });
 
     it('clears all items with namespace - protects namespace items', (done) => {
-      const cache1 = new FileSystemCache({ basePath: BASE_PATH });
-      const cache2 = new FileSystemCache({ basePath: BASE_PATH, ns: 'My Namespace' });
+      const cache1 = new FileSystemCache({ basePath });
+      const cache2 = new FileSystemCache({ basePath, ns: 'My Namespace' });
       cache1
         .set('foo', 'my-text')
         .then(() => cache2.set('foo', 'my-text')) // Different value because of NS.
