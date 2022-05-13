@@ -3,10 +3,21 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 
-
 ## [Unreleased] - YYYY-MM-DD
 #### Added
 #### Changed
+#### Deprecated
+#### Removed
+#### Fixed
+#### Security
+
+
+
+## [2.0.0] - YYYY-MM-DD
+#### Added
+#### Changed
+- Converted project to Typescript
+- Update refs (ramda), thanks to @shernaz
 #### Deprecated
 #### Removed
 #### Fixed

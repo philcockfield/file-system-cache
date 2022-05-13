@@ -4,23 +4,24 @@
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "main": "./lib/index.js",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel-register",
-    "tdd": "./node_modules/mocha/bin/mocha --recursive --compilers js:babel-register --watch",
-    "lint": "eslint ./src",
-    "build": "babel src --out-dir lib --source-maps",
-    "build:watch": "npm run build -- --watch",
-    "prepublish": "npm test && npm run lint && npm run build"
+    "test": "ts-mocha -p tsconfig.json src/**/*.TEST.ts",
+    "build": "tsc",
+    "prepublish": "npm test && npm run build"
   },
   "dependencies": {
-    "bluebird": "^3.3.5",
-    "fs-extra": "^0.30.0",
-    "ramda": "^0.27.2"
+    "fs-extra": "^10.1.0",
+    "ramda": "^0.28.0"
   },
   "devDependencies": {
-    "chai": "^3.4.1",
-    "js-babel": "^6.0.4",
-    "js-babel-dev": "^6.0.5",
-    "mocha": "^2.4.5"
+    "@types/chai": "^4.3.1",
+    "@types/expect": "24.3.0",
+    "@types/fs-extra": "^9.0.13",
+    "@types/mocha": "9.1.1",
+    "@types/ramda": "^0.28.12",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "ts-mocha": "10.0.0",
+    "typescript": "4.6.4"
   },
   "repository": {
     "type": "git",
