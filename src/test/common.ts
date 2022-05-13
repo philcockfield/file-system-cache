@@ -1,5 +1,6 @@
 import { expect } from 'chai';
-import { FileSystemCache, fs, fsPath, Util } from '../cache';
+import { fs, fsPath, Util } from '../common';
+import { FileSystemCache } from '..';
 
 export { FileSystemCache, fs, fsPath, Util, expect };
 

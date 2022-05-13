@@ -1,4 +1,4 @@
-import { FileSystemCache, FileSystemCacheOptions } from './cache';
+import { FileSystemCache, FileSystemCacheOptions } from './FileSystemCache';
 
 /**
  * Default entry function.

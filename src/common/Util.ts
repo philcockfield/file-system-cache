@@ -18,22 +18,11 @@ export const compact = (input: string[]): string[] => {
 export const toStringArray = R.pipe(compact, R.map(R.toString));
 
 export const isFileSync = (path: string) => {
-  if (fs.existsSync(path)) return fs.lstatSync(path).isFile();
-  return false;
+  return fs.existsSync(path) ? fs.lstatSync(path).isFile() : false;
 };
 
 export const readFileSync = (path: string) => {
-  if (fs.existsSync(path)) {
-    return fs.readFileSync(path).toString();
-  }
-};
-
-export const existsP = (path: string) => {
-  return fs.pathExists(path);
-};
-
-export const removeFileP = (path: string) => {
-  return fs.remove(path);
+  return fs.existsSync(path) ? fs.readFileSync(path).toString() : undefined;
 };
 
 export const filePathsP = async (basePath: string, ns: string): Promise<string[]> => {
@@ -48,12 +37,9 @@ export const filePathsP = async (basePath: string, ns: string): Promise<string[]
 /**
  * Turns a set of values into a HEX hash code.
  * @param values: The set of values to hash.
- * @return {String} or undefined.
  */
 export const hash = (...values: any[]) => {
-  if (R.pipe(compact, R.isEmpty)(values)) {
-    return undefined;
-  }
+  if (R.pipe(compact, R.isEmpty)(values)) return undefined;
   const resultHash = crypto.createHash('md5');
   const addValue = (value: any) => resultHash.update(value);
   const addValues = R.forEach(addValue);
@@ -64,7 +50,6 @@ export const hash = (...values: any[]) => {
 /**
  * Retrieve a value from the given path.
  */
-
 export async function getValueP(path: string, defaultValue?: any) {
   const exists = await fs.pathExists(path);
   if (!exists) return defaultValue;
