@@ -1,10 +1,10 @@
-import { expect, FileSystemCache, Util } from './common';
+import { expect, FileSystemCache, Util, basePath } from './common';
 
 const BASE_PATH = './test/samples/get';
 
 describe('remove', function () {
   const setup = async () => {
-    const cache = new FileSystemCache({ basePath: BASE_PATH });
+    const cache = new FileSystemCache({ basePath });
     await cache.set('foo', 'my-text');
     return cache;
   };
