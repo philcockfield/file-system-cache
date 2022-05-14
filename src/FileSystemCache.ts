@@ -30,9 +30,7 @@ export class FileSystemCache {
   constructor(options: FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
     this.ns = Util.hash(options.ns);
-    if (Util.isString(options.extension)) {
-      this.extension = options.extension;
-    }
+    if (Util.isString(options.extension)) this.extension = options.extension;
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
     }
@@ -43,16 +41,10 @@ export class FileSystemCache {
    * @param {string} key: The key of the cache item.
    */
   public path(key: string): string {
-    if (Util.isNothing(key)) {
-      throw new Error(`Path requires a cache key.`);
-    }
+    if (Util.isNothing(key)) throw new Error(`Path requires a cache key.`);
     let name = Util.hash(key);
-    if (this.ns) {
-      name = `${this.ns}-${name}`;
-    }
-    if (this.extension) {
-      name = `${name}.${this.extension.replace(/^\./, '')}`;
-    }
+    if (this.ns) name = `${this.ns}-${name}`;
+    if (this.extension) name = `${name}.${this.extension.replace(/^\./, '')}`;
     return `${this.basePath}/${name}`;
   }
 
@@ -67,21 +59,9 @@ export class FileSystemCache {
   /**
    * Ensure that the base path exists.
    */
-  public ensureBasePath() {
-    return new Promise<void>((resolve, reject) => {
-      if (this.basePathExists) {
-        resolve();
-      } else {
-        fs.ensureDir(this.basePath, (err) => {
-          if (err) {
-            reject(err);
-          } else {
-            this.basePathExists = true;
-            resolve();
-          }
-        });
-      }
-    });
+  public async ensureBasePath() {
+    if (!this.basePathExists) await fs.ensureDir(this.basePath);
+    this.basePathExists = true;
   }
 
   /**
@@ -111,21 +91,11 @@ export class FileSystemCache {
    * @param {string} key: The key of the cache item.
    * @param value: The value to write (Primitive or Object).
    */
-  public set(key: string, value: any) {
+  public async set(key: string, value: any) {
     const path = this.path(key);
-    return new Promise<{ path: string }>((resolve, reject) => {
-      this.ensureBasePath()
-        .then(() => {
-          fs.outputFile(path, Util.toJson(value), (err) => {
-            if (err) {
-              reject(err);
-            } else {
-              resolve({ path });
-            }
-          });
-        })
-        .catch((err) => reject(err));
-    });
+    await this.ensureBasePath();
+    await fs.outputFile(path, Util.toJson(value));
+    return { path };
   }
 
   /**
