@@ -16,7 +16,7 @@ import Cache from "file-system-cache";
 
 const cache = Cache({
   basePath: "./.cache", // Optional. Path where cache files are stored (default).
-  ns: "my-namespace" // Optional. A grouping namespace for items.
+  ns: "my-namespace"    // Optional. A grouping namespace for items.
 });
 ```
 
