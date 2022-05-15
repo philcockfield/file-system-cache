@@ -1,5 +1,4 @@
 # file-system-cache
-[![Build Status](https://travis-ci.org/philcockfield/file-system-cache.svg)](https://travis-ci.org/philcockfield/file-system-cache)
 
 A super-fast, promise-based cache that reads and writes to the file-system.
 
@@ -27,7 +26,7 @@ const cache = Cache({
 The optional `ns` ("namespace") allows for multiple groupings of files to reside within the one cache folder.  When you have multiple caches with different namespaces you can re-use the same keys and they will not collide.
 
 
-#### get(key, defaultValue)
+### get(key, defaultValue)
 Retrieves the contents of a cached file.
 
 ```js
@@ -36,10 +35,16 @@ cache.get("foo")
   .catch(err => /* Fail */);
 ```
 
+or use modern `async/await` syntactic sugar of course:
+
+```js
+const value = await cache.get("foo");
+```
+
 Use `getSync` for a synchronous version.  Pass a `defaultValue` parameter to have that value returned if nothing exists within the cache.
 
 
-#### set(key, value)
+### set(key, value)
 Write a value to the cache.
 
 ```js
@@ -52,14 +57,14 @@ Value types are stored and respected on subsequent calls to `get`.  For examples
 Use `setSync` for a synchronous version.
 
 
-#### remove(key)
+### remove(key)
 Deletes the specified cache item from the file-system.
 ```js
 cache.remove("foo")
   .then(() => /* Removed */)
 ```
 
-#### clear()
+### clear()
 Clears all cached items from the file-system.
 ```js
 cache.clear()
@@ -67,14 +72,14 @@ cache.clear()
 ```
 
 
-#### save()
+### save()
 Saves (sets) several items to the cache in one operation.
 ```js
 cache.save([{ key:"one", value:"hello" }, { key:"two", value:222 }])
   .then(result => /* All items saved. */)
 ```
 
-#### load()
+### load()
 Loads all files within the cache's namespace.
 ```js
 cache.load()
@@ -87,5 +92,3 @@ cache.load()
     # Run tests.
     npm test
 
-    # Watch and re-run tests.
-    npm run tdd
