@@ -41,7 +41,8 @@ or use modern `async/await` syntactic sugar of course:
 const value = await cache.get("foo");
 ```
 
-Use `getSync` for a synchronous version.  Pass a `defaultValue` parameter to have that value returned if nothing exists within the cache.
+Use `getSync` for a synchronous version.  
+Pass a `defaultValue` parameter to use if the key does not exist within the cache.
 
 
 ### set(key, value)
