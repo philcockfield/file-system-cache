@@ -11,8 +11,9 @@ export const ensureString = R.curry((defaultValue, text) =>
   R.is(String, text) ? text : defaultValue,
 );
 
-export const compact = (input: string[]): string[] => {
-  return input.flat().filter((value) => !R.isNil(value));
+export const compact = (input: any[]): string[] => {
+  const flat = [].concat(...input);
+  return flat.filter((value) => !R.isNil(value));
 };
 
 export const toStringArray = R.pipe(compact, R.map(R.toString));
