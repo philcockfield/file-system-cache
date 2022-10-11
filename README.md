@@ -1,3 +1,5 @@
+[![ci(esm)](https://github.com/philcockfield/file-system-cache/actions/workflows/node.esm.yml/badge.svg)](https://github.com/philcockfield/file-system-cache/actions/workflows/node.esm.yml)
+
 # file-system-cache
 
 A super-fast, promise-based cache that reads and writes to the file-system.
