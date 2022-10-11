@@ -11,6 +11,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Fixed
 #### Security
 
+## [2.0.1] - 2022-10-12
+#### Changed
+- Updated package.json dependencies
+
 
 
 ## [2.0.0] - 2022-05-14
