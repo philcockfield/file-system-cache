@@ -27,6 +27,9 @@
     "type": "git",
     "url": "https://github.com/philcockfield/file-system-cache"
   },
+  "resolutions": {
+    "json5": ">=1.0.2"
+  },
   "keywords": [
     "cache",
     "fs",
