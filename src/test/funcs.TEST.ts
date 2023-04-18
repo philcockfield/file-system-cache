@@ -10,18 +10,18 @@ describe('util.hash', function () {
 
   it('returns a hash of multiple values', () => {
     const result = Util.hash('one', undefined, [3, 4], 2);
-    expect(result).to.equal('8c419f18180f081f669c2f765ecd6256');
+    expect(result).to.equal('0f161cb21daaa15962c1085855fe19dcb9df67e9');
   });
 
   it('returns a hash of a single value', () => {
     const result = Util.hash('one');
-    expect(result).to.equal('a2a665650cd1ed2317f27a10233f2712');
+    expect(result).to.equal('443b7f970b6c6af26c392534c0a28ed4ad00a30e');
   });
 
   it('returns a hash from an array', () => {
     const result1 = Util.hash('one', 'two');
     const result2 = Util.hash(['one', 'two']);
-    expect(result1).to.equal('a56d47fc98270e77595d2e39af030886');
+    expect(result1).to.equal('7fc87660c49692a9b11b02cb23cc478771ca3e3f');
     expect(result1).to.equal(result2);
   });
 });

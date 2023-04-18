@@ -41,7 +41,7 @@ export const filePathsP = async (basePath: string, ns: string): Promise<string[]
  */
 export const hash = (...values: any[]) => {
   if (R.pipe(compact, R.isEmpty)(values)) return undefined;
-  const resultHash = crypto.createHash('md5');
+  const resultHash = crypto.createHash('sha1');
   const addValue = (value: any) => resultHash.update(value);
   const addValues = R.forEach(addValue);
   R.pipe(toStringArray, addValues)(values);
