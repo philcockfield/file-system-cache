@@ -11,14 +11,20 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Fixed
 #### Security
 
+
+## [2.1.0] - 2023-04-19
+#### Changed
+- Switched hashing algorithm from MD5 to SHA1 (thanks @rmarone)
+
+
 ## [2.0.2] - 2022-01-17
 #### Security
 - Updated (via package.json `{resolution}`) to `JSON5 >= 1.0.2` (which was marked as a security risk [see here](https://github.com/philcockfield/file-system-cache/security/dependabot/2))
 
+
 ## [2.0.1] - 2022-10-12
 #### Changed
 - Updated package.json dependencies
-
 
 
 ## [2.0.0] - 2022-05-14
