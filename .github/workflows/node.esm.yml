@@ -1,4 +1,4 @@
-name: ci(esm)
+name: ci
 
 on:
   push:
