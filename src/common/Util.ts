@@ -84,5 +84,5 @@ export const toJson = (value: any, ttl: number) => JSON.stringify({ value, type:
  * Check's a cache item to see if it has expired.
  */
 export const isExpired = (data: any) => {
-  return (((new Date(data.created).getTime() - new Date().getTime()) / 1000) && data.ttl > 0)
+  return (((new Date(data.created).getTime() - new Date().getTime()) / 1000) < data.ttl && data.ttl > 0)
 }
