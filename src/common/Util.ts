@@ -59,7 +59,7 @@ export async function getValueP(path: string, defaultValue?: any) {
   } catch (error: any) {
     if (error.code === 'ENOENT') return defaultValue;
     if (error.message === 'Cache item has expired.') {
-      fs.remove(path);
+      fs.removeSync(path);
       return defaultValue;
     }
     throw new Error(`Failed to read cache value at: ${path}. ${error.message}`);
