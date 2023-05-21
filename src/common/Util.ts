@@ -7,9 +7,9 @@ export const toAbsolutePath = (path: string) => {
   return path.startsWith('.') ? fsPath.resolve(path) : path;
 };
 
-export const ensureString = R.curry((defaultValue, text) =>
-  R.is(String, text) ? text : defaultValue,
-);
+export const ensureString = (defaultValue: string, text?: string): string => {
+  return typeof text === 'string' ? text : defaultValue;
+};
 
 export const compact = (input: any[]): string[] => {
   const flat = [].concat(...input);
@@ -78,12 +78,13 @@ export const toGetValue = (data: any) => {
 /**
  * Stringify a value into JSON.
  */
-export const toJson = (value: any, ttl: number) => JSON.stringify({ value, type: R.type(value), created: new Date(), ttl });
+export const toJson = (value: any, ttl: number) =>
+  JSON.stringify({ value, type: R.type(value), created: new Date(), ttl });
 
 /**
  * Check's a cache item to see if it has expired.
  */
 export const isExpired = (data: any) => {
   const timeElapsed = (new Date().getTime() - new Date(data.created).getTime()) / 1000;
-  return ( timeElapsed > data.ttl && data.ttl > 0)
-}
+  return timeElapsed > data.ttl && data.ttl > 0;
+};
