@@ -32,7 +32,7 @@ export class FileSystemCache {
   constructor(options: FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
     this.ns = Util.hash(options.ns);
-    this.ttl = (typeof options.ttl === 'undefined') ? 0 : options.ttl;
+    this.ttl = typeof options.ttl === 'undefined' ? 0 : options.ttl;
     if (Util.isString(options.extension)) this.extension = options.extension;
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
