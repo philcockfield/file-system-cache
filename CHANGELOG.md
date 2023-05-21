@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.3.0] - 2023-05-22
+#### Added
+- `ttl` (time to live) to expire caches (thanks @douglaslinsmeyer)
+
+
 ## [2.1.0] - 2023-04-19
 #### Changed
 - Switched hashing algorithm from MD5 to SHA1 (thanks @rmarone)
