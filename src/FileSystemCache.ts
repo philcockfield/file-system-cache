@@ -1,7 +1,5 @@
 import { R, fs, Util } from './common';
 
-const formatPath = R.pipe(Util.ensureString('./.cache'), Util.toAbsolutePath);
-
 export type FileSystemCacheOptions = {
   basePath?: string;
   ns?: any;
@@ -176,5 +174,14 @@ export class FileSystemCache {
     );
     return { files };
   }
+}
 
+/**
+ * Helpers
+ */
+
+function formatPath(path?: string) {
+  path = Util.ensureString('./.cache', path);
+  path = Util.toAbsolutePath(path);
+  return path;
 }
