@@ -6,6 +6,7 @@ export type FileSystemCacheOptions = {
   basePath?: string;
   ns?: any;
   extension?: string;
+  ttl?: number;
 };
 
 /**
@@ -16,6 +17,7 @@ export class FileSystemCache {
   ns?: any;
   extension?: string;
   basePathExists?: boolean;
+  ttl: number;
 
   /**
    * Constructor.
@@ -26,10 +28,13 @@ export class FileSystemCache {
    *                          a unique namespace within which values for this
    *                          store are cached.
    *            - extension:  An optional file-extension for paths.
+   *            - ttl:        The default time-to-live for cached values in seconds.
+   *                          Default: 0 (never expires)
    */
   constructor(options: FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
     this.ns = Util.hash(options.ns);
+    this.ttl = (typeof options.ttl === 'undefined') ? 0 : options.ttl;
     if (Util.isString(options.extension)) this.extension = options.extension;
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
@@ -91,10 +96,11 @@ export class FileSystemCache {
    * @param {string} key: The key of the cache item.
    * @param value: The value to write (Primitive or Object).
    */
-  public async set(key: string, value: any) {
+  public async set(key: string, value: any, ttl?: number) {
     const path = this.path(key);
+    ttl = typeof ttl === 'number' ? ttl : this.ttl;
     await this.ensureBasePath();
-    await fs.outputFile(path, Util.toJson(value));
+    await fs.outputFile(path, Util.toJson(value, ttl));
     return { path };
   }
 
@@ -104,8 +110,9 @@ export class FileSystemCache {
    * @param value: The value to write (Primitive or Object).
    * @return the cache.
    */
-  public setSync(key: string, value: any) {
-    fs.outputFileSync(this.path(key), Util.toJson(value));
+  public setSync(key: string, value: any, ttl?: number) {
+    ttl = typeof ttl === 'number' ? ttl : this.ttl;
+    fs.outputFileSync(this.path(key), Util.toJson(value, ttl));
     return this;
   }
 
@@ -169,4 +176,5 @@ export class FileSystemCache {
     );
     return { files };
   }
+
 }

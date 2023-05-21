@@ -58,6 +58,10 @@ export async function getValueP(path: string, defaultValue?: any) {
     return toGetValue(await fs.readJson(path));
   } catch (error: any) {
     if (error.code === 'ENOENT') return defaultValue;
+    if (error.message === 'Cache item has expired.') {
+      fs.removeSync(path);
+      return defaultValue;
+    }
     throw new Error(`Failed to read cache value at: ${path}. ${error.message}`);
   }
 }
@@ -66,6 +70,7 @@ export async function getValueP(path: string, defaultValue?: any) {
  * Format value structure.
  */
 export const toGetValue = (data: any) => {
+  if (isExpired(data)) throw new Error(`Cache item has expired.`);
   if (data.type === 'Date') return new Date(data.value);
   return data.value;
 };
@@ -73,4 +78,12 @@ export const toGetValue = (data: any) => {
 /**
  * Stringify a value into JSON.
  */
-export const toJson = (value: any) => JSON.stringify({ value, type: R.type(value) });
+export const toJson = (value: any, ttl: number) => JSON.stringify({ value, type: R.type(value), created: new Date(), ttl });
+
+/**
+ * Check's a cache item to see if it has expired.
+ */
+export const isExpired = (data: any) => {
+  const timeElapsed = (new Date().getTime() - new Date(data.created).getTime()) / 1000;
+  return ( timeElapsed > data.ttl && data.ttl > 0)
+}
