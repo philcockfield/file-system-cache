@@ -19,7 +19,7 @@ import Cache from "file-system-cache";
 const cache = Cache({
   basePath: "./.cache", // Optional. Path where cache files are stored (default).
   ns: "my-namespace",   // Optional. A grouping namespace for items.
-  ttl: 60               // Optional. A time-to-live for how long the cached item is valid (sec).
+  ttl: 60               // Optional. A time-to-live for how long the cached item is valid (secs).
 });
 ```
 
