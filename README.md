@@ -9,6 +9,16 @@ A super-fast, promise-based cache that reads and writes to the file-system.
 
     npm install --save file-system-cache
 
+Import
+
+```ts
+import Cache from 'file-system-cache';
+
+   // or ↑↓ (equivalent)
+
+import { Cache } from 'file-system-cache';
+```
+
 ## Usage (API)
 
 Create an instance of the cache optionally giving it a folder location to store files within.
