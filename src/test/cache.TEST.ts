@@ -1,9 +1,9 @@
-import { FileSystemCache, Util, basePath, expect, fs, fsPath } from './common';
+import { FileSystemCache, Util, basePath, expect, fs, fsPath, type t } from './common';
 
-const ABSOLUTE_BASE_PATH = fsPath.resolve(basePath);
+const BASE_PATH = fsPath.resolve(basePath);
 
 describe('FileSystemCache', function () {
-  it('defaults', async () => {
+  it('defaults', () => {
     const cache = new FileSystemCache();
     expect(cache.hash).to.eql('sha1');
     expect(cache.ttl).to.eql(0);
@@ -45,13 +45,17 @@ describe('FileSystemCache', function () {
     });
 
     it('creates a namespace hash with a single value', () => {
-      const cache = new FileSystemCache({ ns: 'foo' });
-      expect(cache.ns).to.equal(Util.hash('sha1', 'foo'));
+      const cache1 = new FileSystemCache({ ns: 'foo' });
+      const cache2 = new FileSystemCache({ ns: 'foo', hash: 'sha256' });
+      expect(cache1.ns).to.equal(Util.hash('sha1', 'foo'));
+      expect(cache2.ns).to.equal(Util.hash('sha256', 'foo'));
     });
 
     it('creates a namespace hash with several values', () => {
-      const cache = new FileSystemCache({ ns: ['foo', 123] });
-      expect(cache.ns).to.equal(Util.hash('sha1', 'foo', 123));
+      const cache1 = new FileSystemCache({ ns: ['foo', 123] });
+      const cache2 = new FileSystemCache({ ns: ['foo', 123], hash: 'sha256' });
+      expect(cache1.ns).to.equal(Util.hash('sha1', 'foo', 123));
+      expect(cache2.ns).to.equal(Util.hash('sha256', 'foo', 123));
     });
   });
 
@@ -62,29 +66,44 @@ describe('FileSystemCache', function () {
     });
 
     it('returns a path with no namespace', () => {
-      const key = 'foo';
-      const cache = new FileSystemCache({ basePath });
-      const path = `${ABSOLUTE_BASE_PATH}/${Util.hash('sha1', key)}`;
-      expect(cache.path(key)).to.equal(path);
+      const test = (hash: t.HashAlgorithm) => {
+        const key = 'foo';
+        const cache = new FileSystemCache({ basePath, hash });
+        const path = `${BASE_PATH}/${Util.hash(hash, key)}`;
+        expect(cache.path(key)).to.equal(path);
+      };
+
+      test('sha1');
+      test('sha256');
     });
 
     it('returns a path with a namespace', () => {
-      const key = 'foo';
-      const ns = [1, 2];
-      const cache = new FileSystemCache({ basePath, ns: ns });
-      const path = `${ABSOLUTE_BASE_PATH}/${Util.hash('sha1', ns)}-${Util.hash('sha1', key)}`;
-      expect(cache.path(key)).to.equal(path);
+      const test = (hash: t.HashAlgorithm) => {
+        const key = 'foo';
+        const ns = [1, 2];
+        const cache = new FileSystemCache({ basePath, ns, hash });
+        const path = `${BASE_PATH}/${Util.hash(hash, ns)}-${Util.hash(hash, key)}`;
+        expect(cache.path(key)).to.equal(path);
+      };
+
+      test('sha1');
+      test('sha256');
     });
 
     it('returns a path with a file extension', () => {
-      const key = 'foo';
-      const path = `${ABSOLUTE_BASE_PATH}/${Util.hash('sha1', key)}.styl`;
-      let cache;
-      cache = new FileSystemCache({ basePath, extension: 'styl' });
-      expect(cache.path(key)).to.equal(path);
+      const test = (hash: t.HashAlgorithm) => {
+        const key = 'foo';
+        const path = `${BASE_PATH}/${Util.hash(hash, key)}.styl`;
+        let cache;
+        cache = new FileSystemCache({ basePath, hash, extension: 'styl' });
+        expect(cache.path(key)).to.equal(path);
 
-      cache = new FileSystemCache({ basePath, extension: '.styl' });
-      expect(cache.path(key)).to.equal(path);
+        cache = new FileSystemCache({ basePath, hash, extension: '.styl' });
+        expect(cache.path(key)).to.equal(path);
+      };
+
+      test('sha1');
+      test('sha256');
     });
   });
 
