@@ -8,6 +8,7 @@ export class FileSystemCache {
   ns?: any;
   extension?: string;
   basePathExists?: boolean;
+  hash: t.HashAlgorithm;
   ttl: number;
 
   /**
@@ -24,8 +25,9 @@ export class FileSystemCache {
    */
   constructor(options: t.FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
-    this.ns = Util.hash(options.ns);
-    this.ttl = typeof options.ttl === 'undefined' ? 0 : options.ttl;
+    this.hash = options.hash ?? 'sha1';
+    this.ns = Util.hash(this.hash, options.ns);
+    this.ttl = options.ttl ?? 0;
     if (Util.isString(options.extension)) this.extension = options.extension;
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
@@ -38,7 +40,7 @@ export class FileSystemCache {
    */
   public path(key: string): string {
     if (Util.isNothing(key)) throw new Error(`Path requires a cache key.`);
-    let name = Util.hash(key);
+    let name = Util.hash(this.hash, key);
     if (this.ns) name = `${this.ns}-${name}`;
     if (this.extension) name = `${name}.${this.extension.replace(/^\./, '')}`;
     return `${this.basePath}/${name}`;

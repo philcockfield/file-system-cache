@@ -20,6 +20,7 @@ const cache = Cache({
   basePath: "./.cache", // Optional. Path where cache files are stored (default).
   ns: "my-namespace",   // Optional. A grouping namespace for items.
   ttl: 60               // Optional. A time-to-live for how long the cached item is valid (secs).
+  hash?: 'sha1'         // Optional. A hashing algorithm used within the cache key.
 });
 ```
 
