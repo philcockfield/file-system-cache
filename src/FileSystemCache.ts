@@ -22,6 +22,8 @@ export class FileSystemCache {
    *            - extension:  An optional file-extension for paths.
    *            - ttl:        The default time-to-live for cached values in seconds.
    *                          Default: 0 (never expires)
+   *            - hash:       The hashing algorithm to use when generating cache keys.
+   *                          Default: "sha1"
    */
   constructor(options: t.FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
