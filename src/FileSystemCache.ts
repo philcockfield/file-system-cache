@@ -1,11 +1,4 @@
-import { R, fs, Util } from './common';
-
-export type FileSystemCacheOptions = {
-  basePath?: string;
-  ns?: any;
-  extension?: string;
-  ttl?: number;
-};
+import { R, fs, Util, type t } from './common';
 
 /**
  * A cache that read/writes to a specific part of the file-system.
@@ -29,7 +22,7 @@ export class FileSystemCache {
    *            - ttl:        The default time-to-live for cached values in seconds.
    *                          Default: 0 (never expires)
    */
-  constructor(options: FileSystemCacheOptions = {}) {
+  constructor(options: t.FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
     this.ns = Util.hash(options.ns);
     this.ttl = typeof options.ttl === 'undefined' ? 0 : options.ttl;

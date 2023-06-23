@@ -1,4 +1,5 @@
+import type * as t from '../types';
 import * as Util from './Util';
 
-export { Util };
 export * from './libs';
+export { Util, type t };
