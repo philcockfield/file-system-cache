@@ -1,9 +1,9 @@
-export type HashAlgorithm = 'sha1' | 'sha256';
+export type HashAlgorithm = 'sha1' | 'sha256' | 'sha512';
 
 export type FileSystemCacheOptions = {
   basePath?: string;
   ns?: any;
-  extension?: string;
   ttl?: number;
   hash?: HashAlgorithm;
+  extension?: string;
 };

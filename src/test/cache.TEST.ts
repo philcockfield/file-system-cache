@@ -47,15 +47,19 @@ describe('FileSystemCache', function () {
     it('creates a namespace hash with a single value', () => {
       const cache1 = new FileSystemCache({ ns: 'foo' });
       const cache2 = new FileSystemCache({ ns: 'foo', hash: 'sha256' });
+      const cache3 = new FileSystemCache({ ns: 'foo', hash: 'sha512' });
       expect(cache1.ns).to.equal(Util.hash('sha1', 'foo'));
       expect(cache2.ns).to.equal(Util.hash('sha256', 'foo'));
+      expect(cache3.ns).to.equal(Util.hash('sha512', 'foo'));
     });
 
     it('creates a namespace hash with several values', () => {
       const cache1 = new FileSystemCache({ ns: ['foo', 123] });
       const cache2 = new FileSystemCache({ ns: ['foo', 123], hash: 'sha256' });
+      const cache3 = new FileSystemCache({ ns: ['foo', 123], hash: 'sha512' });
       expect(cache1.ns).to.equal(Util.hash('sha1', 'foo', 123));
       expect(cache2.ns).to.equal(Util.hash('sha256', 'foo', 123));
+      expect(cache3.ns).to.equal(Util.hash('sha512', 'foo', 123));
     });
   });
 
@@ -75,6 +79,7 @@ describe('FileSystemCache', function () {
 
       test('sha1');
       test('sha256');
+      test('sha512');
     });
 
     it('returns a path with a namespace', () => {
@@ -88,6 +93,7 @@ describe('FileSystemCache', function () {
 
       test('sha1');
       test('sha256');
+      test('sha512');
     });
 
     it('returns a path with a file extension', () => {
@@ -104,6 +110,7 @@ describe('FileSystemCache', function () {
 
       test('sha1');
       test('sha256');
+      test('sha512');
     });
   });
 
