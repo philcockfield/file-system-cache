@@ -1,4 +1,5 @@
-import { R, fs, fsPath, crypto } from './libs';
+import { type t } from '../common.t';
+import { R, crypto, fs, fsPath } from './libs';
 
 export const isNothing = (value: any) => R.isNil(value) || R.isEmpty(value);
 export const isString = R.is(String);
@@ -39,13 +40,17 @@ export const filePathsP = async (basePath: string, ns: string): Promise<string[]
  * Turns a set of values into a HEX hash code.
  * @param values: The set of values to hash.
  */
-export const hash = (...values: any[]) => {
+export const hash = (algorithm: t.HashAlgorithm, ...values: any[]) => {
   if (R.pipe(compact, R.isEmpty)(values)) return undefined;
-  const resultHash = crypto.createHash('sha1');
+  const resultHash = crypto.createHash(algorithm);
   const addValue = (value: any) => resultHash.update(value);
   const addValues = R.forEach(addValue);
   R.pipe(toStringArray, addValues)(values);
   return resultHash.digest('hex');
+};
+
+export const hashExists = (algorithm: t.HashAlgorithm) => {
+  return crypto.getHashes().includes(algorithm);
 };
 
 /**

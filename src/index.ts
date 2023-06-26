@@ -1,7 +1,8 @@
-import { FileSystemCache, FileSystemCacheOptions } from './FileSystemCache';
+import { type t } from './common';
+import { FileSystemCache } from './FileSystemCache';
 
 /**
  * Default entry function.
  */
-export default (options?: FileSystemCacheOptions) => new FileSystemCache(options);
-export { FileSystemCache };
+export default (options?: t.FileSystemCacheOptions) => new FileSystemCache(options);
+export { FileSystemCache, FileSystemCache as Cache };

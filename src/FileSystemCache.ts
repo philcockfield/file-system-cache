@@ -1,21 +1,23 @@
-import { R, fs, Util } from './common';
-
-export type FileSystemCacheOptions = {
-  basePath?: string;
-  ns?: any;
-  extension?: string;
-  ttl?: number;
-};
+import { R, Util, fs, hashAlgorithms, type t } from './common';
 
 /**
  * A cache that read/writes to a specific part of the file-system.
  */
 export class FileSystemCache {
-  basePath: string;
-  ns?: any;
-  extension?: string;
+  /**
+   * The list of all available hash algorithms.
+   */
+  static hashAlgorithms: t.HashAlgorithm[] = hashAlgorithms;
+
+  /**
+   * Instance.
+   */
+  readonly basePath: string;
+  readonly ns?: any;
+  readonly extension?: string;
+  readonly hash: t.HashAlgorithm;
+  readonly ttl: number;
   basePathExists?: boolean;
-  ttl: number;
 
   /**
    * Constructor.
@@ -28,14 +30,22 @@ export class FileSystemCache {
    *            - extension:  An optional file-extension for paths.
    *            - ttl:        The default time-to-live for cached values in seconds.
    *                          Default: 0 (never expires)
+   *            - hash:       The hashing algorithm to use when generating cache keys.
+   *                          Default: "sha1"
    */
-  constructor(options: FileSystemCacheOptions = {}) {
+  constructor(options: t.FileSystemCacheOptions = {}) {
     this.basePath = formatPath(options.basePath);
-    this.ns = Util.hash(options.ns);
-    this.ttl = typeof options.ttl === 'undefined' ? 0 : options.ttl;
+    this.hash = options.hash ?? 'sha1';
+    this.ns = Util.hash(this.hash, options.ns);
+    this.ttl = options.ttl ?? 0;
     if (Util.isString(options.extension)) this.extension = options.extension;
+
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
+    }
+
+    if (!Util.hashExists(this.hash)) {
+      throw new Error(`Hash does not exist: ${this.hash}`);
     }
   }
 
@@ -45,7 +55,7 @@ export class FileSystemCache {
    */
   public path(key: string): string {
     if (Util.isNothing(key)) throw new Error(`Path requires a cache key.`);
-    let name = Util.hash(key);
+    let name = Util.hash(this.hash, key);
     if (this.ns) name = `${this.ns}-${name}`;
     if (this.extension) name = `${name}.${this.extension.replace(/^\./, '')}`;
     return `${this.basePath}/${name}`;

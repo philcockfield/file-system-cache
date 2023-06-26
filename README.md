@@ -9,6 +9,16 @@ A super-fast, promise-based cache that reads and writes to the file-system.
 
     npm install --save file-system-cache
 
+Import
+
+```ts
+import Cache from 'file-system-cache';
+
+   // or ↑↓ (equivalent)
+
+import { Cache } from 'file-system-cache';
+```
+
 ## Usage (API)
 
 Create an instance of the cache optionally giving it a folder location to store files within.
@@ -17,9 +27,10 @@ Create an instance of the cache optionally giving it a folder location to store 
 import Cache from "file-system-cache";
 
 const cache = Cache({
-  basePath: "./.cache", // Optional. Path where cache files are stored (default).
-  ns: "my-namespace",   // Optional. A grouping namespace for items.
-  ttl: 60               // Optional. A time-to-live for how long the cached item is valid (secs).
+  basePath: "./.cache", // (optional) Path where cache files are stored (default).
+  ns: "my-namespace",   // (optional) A grouping namespace for items.
+  hash: "sha1"          // (optional) A hashing algorithm used within the cache key.
+  ttl: 60               // (optional) A time-to-live (in secs) on how long an item remains cached.
 });
 ```
 

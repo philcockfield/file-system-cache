@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.4.0] - 2023-06-27
+#### Added
+- multiple path hashing options (thanks @trevor-vaughan)
+
+
 ## [2.3.0] - 2023-05-22
 #### Added
 - `ttl` (time to live) to expire caches (thanks @douglaslinsmeyer)
