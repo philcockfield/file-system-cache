@@ -7,7 +7,7 @@
     "test": "ts-mocha -p tsconfig.json src/**/*.TEST.ts",
     "build": "tsc",
     "prepublish": "npm test && npm run build",
-    "gen:hash-type": "ts-node-esm -T ./script.ts/hashtype.ts"
+    "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.ts"
   },
   "dependencies": {
     "fs-extra": "11.1.1",
