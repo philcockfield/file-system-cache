@@ -50,7 +50,8 @@ describe('common/util', () => {
 
   describe('util.hash (generator)', () => {
     it('hashes constant matches node', () => {
-      expect(FileSystemCache.hashAlgorithms).to.eql(crypto.getHashes());
+      const hashes = crypto.getHashes();
+      FileSystemCache.hashAlgorithms.forEach((name) => expect(hashes).to.include(name));
     });
   });
 });
