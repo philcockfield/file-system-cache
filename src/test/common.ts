@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { FileSystemCache } from '..';
-import { Util, fs, fsPath, type t } from '../common';
+import { Util, crypto, fs, fsPath, type t } from '../common';
 
-export { FileSystemCache, Util, expect, fs, fsPath, type t };
+export { FileSystemCache, Util, crypto, expect, fs, fsPath, type t };
 export const basePath = './.tmp';
 
 const deleteFolder = () => fs.removeSync(fsPath.resolve(basePath));

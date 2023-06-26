@@ -1,5 +1,6 @@
 import * as Util from './util';
 
+export * from './const.hashes';
 export * from './libs';
 export { Util };
 

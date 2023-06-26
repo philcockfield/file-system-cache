@@ -1,4 +1,4 @@
-import { expect, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect } from './common';
 
 function sleep(seconds: number): Promise<void> {
   return new Promise<void>((resolve) => {
