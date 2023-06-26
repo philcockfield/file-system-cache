@@ -1,15 +1,23 @@
-import { R, Util, fs, type t } from './common';
+import { R, Util, fs, hashAlgorithms, type t } from './common';
 
 /**
  * A cache that read/writes to a specific part of the file-system.
  */
 export class FileSystemCache {
-  basePath: string;
-  ns?: any;
-  extension?: string;
+  /**
+   * The list of all available hash algorithms.
+   */
+  static hashAlgorithms: t.HashAlgorithm[] = hashAlgorithms;
+
+  /**
+   * Instance.
+   */
+  readonly basePath: string;
+  readonly ns?: any;
+  readonly extension?: string;
+  readonly hash: t.HashAlgorithm;
+  readonly ttl: number;
   basePathExists?: boolean;
-  hash: t.HashAlgorithm;
-  ttl: number;
 
   /**
    * Constructor.
