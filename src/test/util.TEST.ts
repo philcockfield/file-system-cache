@@ -1,4 +1,4 @@
-import { Util, expect, type t } from './common';
+import { FileSystemCache, Util, crypto, expect, type t } from './common';
 
 describe('common/util', () => {
   it('compact', () => {
@@ -7,7 +7,7 @@ describe('common/util', () => {
     expect(res).to.eql(['one', 'two', 'three']);
   });
 
-  describe('util.hash', function () {
+  describe('util.hash', () => {
     it("does not hash 'nothing' (undefined)", () => {
       const test = (algorithm: t.HashAlgorithm) => {
         expect(Util.hash(algorithm)).to.equal(undefined);
@@ -15,8 +15,7 @@ describe('common/util', () => {
         expect(Util.hash(algorithm, null, undefined)).to.equal(undefined);
         expect(Util.hash(algorithm, null, [undefined, null])).to.equal(undefined);
       };
-      test('sha1');
-      test('sha256');
+      FileSystemCache.hashAlgorithms.forEach(test);
     });
 
     it('returns a hash of multiple values', () => {
@@ -46,6 +45,12 @@ describe('common/util', () => {
       };
       test('sha1', '7fc87660c49692a9b11b02cb23cc478771ca3e3f');
       test('sha256', 'c7d71a7239fceefe30f084ed730d02f609fe63024dc5cf57c674052efedd96ff');
+    });
+  });
+
+  describe('util.hash (generator)', () => {
+    it('hashes constant matches node', () => {
+      expect(FileSystemCache.hashAlgorithms).to.eql(crypto.getHashes());
     });
   });
 });
