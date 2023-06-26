@@ -2,7 +2,7 @@ import { FileSystemCache, Util, basePath, expect, fs, fsPath, type t } from './c
 
 const BASE_PATH = fsPath.resolve(basePath);
 
-describe('FileSystemCache', function () {
+describe('FileSystemCache', () => {
   it('defaults', () => {
     const cache = new FileSystemCache();
     expect(cache.hash).to.eql('sha1');
@@ -11,7 +11,7 @@ describe('FileSystemCache', function () {
     expect(cache.extension).to.eql(undefined);
   });
 
-  describe('basePath', function () {
+  describe('basePath', () => {
     it("has a default path of '/.cache'", () => {
       const cache = new FileSystemCache();
       expect(cache.basePath).to.equal(fsPath.resolve('./.cache'));
@@ -37,7 +37,7 @@ describe('FileSystemCache', function () {
     });
   });
 
-  describe('ns (namespace)', function () {
+  describe('ns (namespace)', () => {
     it('has no namespace by default', () => {
       expect(new FileSystemCache().ns).to.equal(undefined);
       expect(new FileSystemCache([] as any).ns).to.equal(undefined);
@@ -63,7 +63,7 @@ describe('FileSystemCache', function () {
     });
   });
 
-  describe('path', function () {
+  describe('path', () => {
     it('throws if no key is provided', () => {
       const cache = new FileSystemCache({ basePath });
       expect(() => (cache as any).path()).to.throw();
@@ -114,7 +114,7 @@ describe('FileSystemCache', function () {
     });
   });
 
-  describe('ensureBasePath()', function () {
+  describe('ensureBasePath()', () => {
     it('creates the base path', (done) => {
       const cache = new FileSystemCache({ basePath });
       expect(fs.existsSync(cache.basePath)).to.equal(false);
