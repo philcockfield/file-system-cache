@@ -1,4 +1,5 @@
-export type HashAlgorithm = 'sha1' | 'sha256' | 'sha512';
+import type { HashAlgorithm } from './types.hashes';
+export type { HashAlgorithm };
 
 export type FileSystemCacheOptions = {
   basePath?: string;
