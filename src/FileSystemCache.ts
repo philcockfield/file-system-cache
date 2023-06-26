@@ -39,8 +39,13 @@ export class FileSystemCache {
     this.ns = Util.hash(this.hash, options.ns);
     this.ttl = options.ttl ?? 0;
     if (Util.isString(options.extension)) this.extension = options.extension;
+
     if (Util.isFileSync(this.basePath)) {
       throw new Error(`The basePath '${this.basePath}' is a file. It should be a folder.`);
+    }
+
+    if (!Util.hashExists(this.hash)) {
+      throw new Error(`Hash does not exist: ${this.hash}`);
     }
   }
 

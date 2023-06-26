@@ -49,6 +49,10 @@ export const hash = (algorithm: t.HashAlgorithm, ...values: any[]) => {
   return resultHash.digest('hex');
 };
 
+export const hashExists = (algorithm: t.HashAlgorithm) => {
+  return crypto.getHashes().includes(algorithm);
+};
+
 /**
  * Retrieve a value from the given path.
  */

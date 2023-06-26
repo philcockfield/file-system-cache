@@ -3,12 +3,20 @@ import { FileSystemCache, Util, basePath, expect, fs, fsPath, type t } from './c
 const BASE_PATH = fsPath.resolve(basePath);
 
 describe('FileSystemCache', () => {
-  it('defaults', () => {
-    const cache = new FileSystemCache();
-    expect(cache.hash).to.eql('sha1');
-    expect(cache.ttl).to.eql(0);
-    expect(cache.ns).to.eql(undefined);
-    expect(cache.extension).to.eql(undefined);
+  describe('constructor', () => {
+    it('defaults', () => {
+      const cache = new FileSystemCache();
+      expect(cache.hash).to.eql('sha1');
+      expect(cache.ttl).to.eql(0);
+      expect(cache.ns).to.eql(undefined);
+      expect(cache.extension).to.eql(undefined);
+    });
+
+    it('throw: hash not supported', async () => {
+      const hash = '404-no-exist' as any;
+      const fn = () => new FileSystemCache({ hash });
+      expect(fn).to.throw(/Hash does not exist/);
+    });
   });
 
   describe('basePath', () => {
