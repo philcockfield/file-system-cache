@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.4.1] - 2023-06-28
+#### Fixed
+- Cleared case difference in generated /lib folder (name "Util.js" → "util.js")
+
+
 ## [2.4.0] - 2023-06-27
 #### Added
 - multiple path hashing options (thanks @trevor-vaughan)
