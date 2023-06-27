@@ -1,12 +1,12 @@
 {
   "name": "file-system-cache",
-  "version": "2.4.0",
+  "version": "2.4.1",
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "main": "./lib/index.js",
   "scripts": {
     "test": "ts-mocha -p tsconfig.json src/**/*.TEST.ts",
     "build": "tsc",
-    "prepublish": "npm test && npm run build",
+    "prepublish": "npm test && rm -rf ./lib && npm run build",
     "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.ts"
   },
   "dependencies": {
