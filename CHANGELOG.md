@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.4.2] - 2023-06-8
+#### Fixed
+- Issue #33: "@types/ramda" types as devDependency causing upstream issues on `--skipLib`
+
+
 ## [2.4.1] - 2023-06-28
 #### Fixed
 - Cleared case difference in generated /lib folder (name "Util.js" → "util.js")
