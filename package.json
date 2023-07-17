@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "@types/ramda": "0.29.3",
+    "@types/fs-extra": "11.0.1",
     "fs-extra": "11.1.1",
     "ramda": "0.29.0"
   },
   "devDependencies": {
     "@types/chai": "4.3.5",
     "@types/expect": "24.3.0",
-    "@types/fs-extra": "11.0.1",
     "@types/mocha": "10.0.1",
     "chai": "4.3.7",
     "mocha": "10.2.0",
