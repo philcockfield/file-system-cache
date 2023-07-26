@@ -1,4 +1,5 @@
-import type * as t from '../types';
+import { type t } from './types.t';
+
 import { R, crypto } from './libs';
 import { compact, toStringArray } from './util.primitive';
 
