@@ -1,4 +1,4 @@
-import { type t } from '../common.t';
+import type * as t from '../types';
 import { R, crypto, fs, fsPath } from './libs';
 
 export const isNothing = (value: any) => R.isNil(value) || R.isEmpty(value);
