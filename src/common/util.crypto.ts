@@ -63,14 +63,3 @@ export function decrypt(
     toString: () => decrypted.toString(),
   };
 }
-
-// const decrypt_ = (hash) => {
-//   const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'));
-//
-//   const decrpyted = Buffer.concat([
-//     decipher.update(Buffer.from(hash.content, 'hex')),
-//     decipher.final(),
-//   ]);
-//
-//   return decrpyted.toString();
-// };
