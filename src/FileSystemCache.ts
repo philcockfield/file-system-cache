@@ -1,4 +1,4 @@
-import { R, Util, fs, hashAlgorithms, type t } from './common';
+import { DEFAULTS, R, Util, fs, hashAlgorithms, type t } from './common';
 
 /**
  * A cache that read/writes to a specific part of the file-system.
@@ -37,7 +37,7 @@ export class FileSystemCache {
     this.basePath = formatPath(options.basePath);
     this.hash = options.hash ?? 'sha1';
     this.ns = Util.hash(this.hash, options.ns);
-    this.ttl = options.ttl ?? 0;
+    this.ttl = options.ttl ?? DEFAULTS.ttl;
     if (Util.isString(options.extension)) this.extension = options.extension;
 
     if (Util.isFileSync(this.basePath)) {
@@ -105,10 +105,11 @@ export class FileSystemCache {
    * @param value: The value to write (Primitive or Object).
    */
   public async set(key: string, value: any, ttl?: number) {
-    const path = this.path(key);
     ttl = typeof ttl === 'number' ? ttl : this.ttl;
+    const path = this.path(key);
+    const data = Util.toJson(value, ttl);
     await this.ensureBasePath();
-    await fs.outputFile(path, Util.toJson(value, ttl));
+    await fs.outputFile(path, data);
     return { path };
   }
 
@@ -120,7 +121,8 @@ export class FileSystemCache {
    */
   public setSync(key: string, value: any, ttl?: number) {
     ttl = typeof ttl === 'number' ? ttl : this.ttl;
-    fs.outputFileSync(this.path(key), Util.toJson(value, ttl));
+    const data = Util.toJson(value, ttl);
+    fs.outputFileSync(this.path(key), data);
     return this;
   }
 
