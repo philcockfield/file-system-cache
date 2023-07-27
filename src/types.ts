@@ -8,3 +8,15 @@ export type FileSystemCacheOptions = {
   hash?: HashAlgorithm;
   extension?: string;
 };
+
+export type EncryptedFile = {
+  iv: Buffer;
+  data: Buffer;
+  toString(): string;
+};
+
+export type DecryptedFile = {
+  iv: Buffer;
+  data: Buffer;
+  toString(): string;
+};
