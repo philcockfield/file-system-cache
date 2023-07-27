@@ -9,8 +9,16 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Deprecated
 #### Removed
 #### Fixed
-- "@types/fs-extra" types as devDependency causing upstream issues
 #### Security
+
+
+
+
+
+## [2.4.3] - 2023-07-28
+#### Fixed
+- "@types/fs-extra" types as devDependency causing upstream issues (thanks @jbpenrath)
+- Transpile errors within lib imports (thanks @hankyupark)
 
 
 ## [2.4.2] - 2023-06-8
