@@ -1,4 +1,4 @@
-import { expectError, FileSystemCache, fs, expect, basePath } from './common';
+import { FileSystemCache, basePath, expect, expectError, fs } from './common';
 
 describe('save', function () {
   it('throws if items not valid', async () => {

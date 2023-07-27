@@ -1,6 +1,4 @@
-import { expect, FileSystemCache, Util, basePath } from './common';
-
-const BASE_PATH = './test/samples/get';
+import { FileSystemCache, Util, basePath, expect } from './common';
 
 describe('remove', function () {
   const setup = async () => {

@@ -1,4 +1,4 @@
-import { expect, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect } from './common';
 
 describe('get', function () {
   it('file not exist on the file-system', async () => {

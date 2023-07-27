@@ -1,4 +1,4 @@
-import { expect, fs, Util, FileSystemCache, basePath } from './common';
+import { FileSystemCache, Util, basePath, expect, fs } from './common';
 
 describe('set', function () {
   it('saves a string to the file-system', async () => {

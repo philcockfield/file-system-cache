@@ -1,4 +1,4 @@
-import { expect, fs, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect, fs } from './common';
 
 describe('clear', function () {
   it('clears all items (no namespace)', (done) => {
