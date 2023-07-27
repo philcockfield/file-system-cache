@@ -1,6 +1,6 @@
 import { FileSystemCache, basePath, expect, expectError, fs } from './common';
 
-describe('save', function () {
+describe('save', () => {
   it('throws if items not valid', async () => {
     const cache = new FileSystemCache({ basePath });
 

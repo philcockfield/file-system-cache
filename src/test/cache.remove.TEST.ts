@@ -1,6 +1,6 @@
 import { FileSystemCache, Util, basePath, expect } from './common';
 
-describe('remove', function () {
+describe('remove', () => {
   const setup = async () => {
     const cache = new FileSystemCache({ basePath });
     await cache.set('foo', 'my-text');
