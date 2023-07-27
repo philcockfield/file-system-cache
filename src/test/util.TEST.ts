@@ -54,4 +54,29 @@ describe('common/util', () => {
       FileSystemCache.hashAlgorithms.forEach((name) => expect(hashes).to.include(name));
     });
   });
+
+  describe('util.encrypt/decrypt', () => {
+    const secretKey = 'sample-1234578912345789123457foo';
+
+    it('not idempotent (random initialization vector)', () => {
+      const text = '👋 hello world';
+      const res1 = Util.encrypt(secretKey, text);
+      const res2 = Util.encrypt(secretKey, text);
+      expect(res1.iv).to.not.eql(res2.iv);
+      expect(res1.data).to.not.eql(res2.data);
+      expect(res1.toString()).to.not.eql(res2.toString());
+    });
+
+    it('encrypt → decrypt', () => {
+      const text = '👋 hello world';
+      const encrypted = Util.encrypt(secretKey, text);
+
+      const res1 = Util.decrypt(secretKey, encrypted);
+      const res2 = Util.decrypt(secretKey, encrypted.toString());
+
+      expect(res1.iv).to.eql(encrypted.iv);
+      expect(res1.toString()).to.eql(text);
+      expect(res2.toString()).to.eql(text);
+    });
+  });
 });

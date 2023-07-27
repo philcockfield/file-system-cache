@@ -1,7 +1,7 @@
-import { expect, fs, Util, FileSystemCache, basePath } from './common';
+import { FileSystemCache, Util, basePath, expect, fs } from './common';
 
-describe('set', function () {
-  it('saves a string to the file-system', async () => {
+describe('set', () => {
+  it('async: saves a string to the file-system', async () => {
     const cache = new FileSystemCache({ basePath });
     const path = cache.path('foo');
     const value = 'my value';
@@ -12,7 +12,7 @@ describe('set', function () {
     expect(Util.readFileSync(path)).to.include('my value');
   });
 
-  it('saves an object to the file-system', async () => {
+  it('async: saves an object to the file-system', async () => {
     const cache = new FileSystemCache({ basePath });
     const value = { text: 'hello', number: 123 };
 
@@ -23,7 +23,7 @@ describe('set', function () {
     expect(fileText).to.include('123');
   });
 
-  it('setSync: saves a value synchonously', () => {
+  it('sync: saves a value synchonously', () => {
     const cache = new FileSystemCache({ basePath });
     const result = cache.setSync('foo', { text: 'sync' });
     expect(result).to.equal(cache);

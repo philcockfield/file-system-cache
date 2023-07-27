@@ -1,7 +1,6 @@
 import * as Util from './util';
 
-export * from './const.hashes';
+export * from './const';
 export * from './libs';
+export { type t } from './types.t';
 export { Util };
-
-export { type t } from '../common.t';

@@ -1,6 +1,6 @@
-import { expect, fs, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect, fs } from './common';
 
-describe('clear', function () {
+describe('clear', () => {
   it('clears all items (no namespace)', (done) => {
     const cache = new FileSystemCache({ basePath });
     const readdir = () => fs.readdirSync(cache.basePath);

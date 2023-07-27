@@ -1,8 +1,6 @@
-import { expect, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect } from './common';
 
-const BASE_PATH = './test/samples/load';
-
-describe('load', function () {
+describe('load', () => {
   it('loads no files', async () => {
     const cache = new FileSystemCache({ basePath });
     const result = await cache.load();

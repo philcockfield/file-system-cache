@@ -3,8 +3,8 @@
  * See:
  *    - generator:  script.ts/generate-hashtype.ts
  *    - command:    yarn run gen:hashtype
- */    
-import { type t } from '../common.t';
+ */
+import type * as t from '../types';
 
 export const hashAlgorithms: t.HashAlgorithm[] = [
   'RSA-MD5',
@@ -58,4 +58,5 @@ export const hashAlgorithms: t.HashAlgorithm[] = [
   'sm3',
   'sm3WithRSAEncryption',
   'ssl3-md5',
-  'ssl3-sha1'];
+  'ssl3-sha1',
+];

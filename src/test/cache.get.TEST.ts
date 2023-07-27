@@ -1,6 +1,6 @@
-import { expect, FileSystemCache, basePath } from './common';
+import { FileSystemCache, basePath, expect } from './common';
 
-describe('get', function () {
+describe('get', () => {
   it('file not exist on the file-system', async () => {
     const cache = new FileSystemCache({ basePath });
     const res = await cache.get('foo');
