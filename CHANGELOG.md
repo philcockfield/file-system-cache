@@ -12,6 +12,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.4.4] - 2023-08-11
+#### Fixed
+- Expired item no longer throwing error on call to `getSync` (thanks @ejc3 for reporting)
+
+
 
 
 
