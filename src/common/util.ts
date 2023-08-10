@@ -75,7 +75,7 @@ export async function getValueP(path: string, defaultValue?: any) {
  * Format value structure.
  */
 export const toGetValue = (data: any) => {
-  if (isExpired(data)) throw new Error(`Cache item has expired.`);
+  if (isExpired(data)) return undefined;
   if (data.type === 'Date') return new Date(data.value);
   return data.value;
 };
