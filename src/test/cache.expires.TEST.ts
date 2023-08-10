@@ -9,7 +9,7 @@ function sleep(seconds: number): Promise<void> {
 describe('expires', async function () {
   this.timeout(3000);
 
-  it('cache doesnt expire (various types)', (done) => {
+  it('cache does NOT expire (various types)', (done) => {
     const cache1 = new FileSystemCache({ basePath, ttl: 10 });
     const cache2 = new FileSystemCache({ basePath, ttl: 10 });
 
@@ -29,9 +29,9 @@ describe('expires', async function () {
     });
   });
 
-  it('cache expires (various types)', (done) => {
-    const cache1 = new FileSystemCache({ basePath, ttl: 0.5 });
-    const cache2 = new FileSystemCache({ basePath, ttl: 0.5 });
+  it('cache DOES expires (various types)', (done) => {
+    const cache1 = new FileSystemCache({ basePath, ttl: 0.3 });
+    const cache2 = new FileSystemCache({ basePath, ttl: 0.3 });
     cache1.set('number', 123);
     cache1.set('object', { foo: 456 }, 1).then(() => {
       sleep(1).then(() => {
@@ -43,5 +43,17 @@ describe('expires', async function () {
           .catch((err) => console.error(err));
       });
     });
+  });
+
+  it('after expiring empty value is returned', async () => {
+    const cache = new FileSystemCache({ basePath, ttl: 0.3 });
+    await cache.set('my-number', 123);
+
+    const res1 = await cache.getSync('my-number');
+    await sleep(0.4);
+
+    const res2 = await cache.getSync('my-number');
+    expect(res1).to.eql(123);
+    expect(res2).to.eql(undefined);
   });
 });

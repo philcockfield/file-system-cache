@@ -1,6 +1,6 @@
 {
   "name": "file-system-cache",
-  "version": "2.4.3",
+  "version": "2.4.4",
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "main": "./lib/index.js",
   "scripts": {
