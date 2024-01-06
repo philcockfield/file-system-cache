@@ -7,23 +7,23 @@
     "test": "ts-mocha -p tsconfig.json src/**/*.TEST.ts",
     "build": "tsc",
     "prepublish": "npm test && rm -rf ./lib && npm run build",
-    "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.ts"
+    "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.mts"
   },
   "dependencies": {
     "@types/ramda": "0.29.3",
-    "@types/fs-extra": "11.0.1",
-    "fs-extra": "11.1.1",
-    "ramda": "0.29.0"
+    "@types/fs-extra": "11.0.4",
+    "fs-extra": "11.2.0",
+    "ramda": "0.29.1"
   },
   "devDependencies": {
-    "@types/chai": "4.3.5",
+    "@types/chai": "4.3.11",
     "@types/expect": "24.3.0",
-    "@types/mocha": "10.0.1",
-    "chai": "4.3.7",
+    "@types/mocha": "10.0.6",
+    "chai": "5.0.0",
     "mocha": "10.2.0",
     "ts-mocha": "10.0.0",
-    "ts-node": "10.9.1",
-    "typescript": "5.1.6"
+    "ts-node": "10.9.2",
+    "typescript": "5.3.3"
   },
   "repository": {
     "type": "git",
