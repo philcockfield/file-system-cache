@@ -10,7 +10,7 @@
     "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.ts"
   },
   "dependencies": {
-    "@types/ramda": "0.29.3",
+    "@types/ramda": "0.29.9",
     "@types/fs-extra": "11.0.4",
     "fs-extra": "11.2.0",
     "ramda": "0.29.1"
