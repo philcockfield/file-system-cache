@@ -1,6 +1,21 @@
-import { expect, fs, Util, FileSystemCache, basePath } from './common';
+import {
+  BasePath,
+  FileSystemCache,
+  Util,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  fs,
+  it,
+} from './common';
 
-describe('set', function () {
+describe('set', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
+
   it('saves a string to the file-system', async () => {
     const cache = new FileSystemCache({ basePath });
     const path = cache.path('foo');

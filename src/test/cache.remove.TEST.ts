@@ -1,8 +1,20 @@
-import { expect, FileSystemCache, Util, basePath } from './common';
+import {
+  BasePath,
+  FileSystemCache,
+  Util,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  it,
+} from './common';
 
-const BASE_PATH = './test/samples/get';
+describe('remove', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
 
-describe('remove', function () {
   const setup = async () => {
     const cache = new FileSystemCache({ basePath });
     await cache.set('foo', 'my-text');

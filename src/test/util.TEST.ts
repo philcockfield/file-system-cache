@@ -1,4 +1,4 @@
-import { FileSystemCache, Util, crypto, expect, type t } from './common';
+import { FileSystemCache, Util, crypto, describe, expect, it, type t } from './common';
 
 describe('common/util', () => {
   it('compact', () => {

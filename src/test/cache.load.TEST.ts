@@ -1,8 +1,19 @@
-import { expect, FileSystemCache, basePath } from './common';
+import {
+  BasePath,
+  FileSystemCache,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  it,
+} from './common';
 
-const BASE_PATH = './test/samples/load';
+describe('load', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
 
-describe('load', function () {
   it('loads no files', async () => {
     const cache = new FileSystemCache({ basePath });
     const result = await cache.load();

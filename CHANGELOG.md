@@ -2,10 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-
 ## [Unreleased] - YYYY-MM-DD
 #### Added
 #### Changed
+#### Deprecated
+#### Removed
+#### Fixed
+#### Security
+
+
+
+## [next] - YYYY-MM-DD
+#### Added
+#### Changed
+- switched testing framework from `mocha` to `vitest`
+- switched `ts-node` to `tsx`
 #### Deprecated
 #### Removed
 #### Fixed

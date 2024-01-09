@@ -2,12 +2,27 @@ import { expect } from 'chai';
 import { FileSystemCache } from '..';
 import { Util, crypto, fs, fsPath, type t } from '../common';
 
+export { afterAll, afterEach, beforeAll, beforeEach, describe, it } from 'vitest';
 export { FileSystemCache, Util, crypto, expect, fs, fsPath, type t };
-export const basePath = './.tmp';
 
-const deleteFolder = () => fs.removeSync(fsPath.resolve(basePath));
-beforeEach(() => deleteFolder());
-afterEach(() => deleteFolder());
+export const BasePath = {
+  root: './.tmp',
+  random(prefix: string = 'cache') {
+    const random = Math.floor(Math.random() * 9999) + 1;
+    const text = `${prefix}.${random}`;
+    return fsPath.resolve(BasePath.root, text);
+  },
+} as const;
+
+export const deleteTmpDir = async (basePath?: string) => {
+  const path = fsPath.resolve(basePath || BasePath.root);
+  fs.removeSync(path);
+};
+
+export const Sleep = {
+  msecs: (delay: number) => new Promise<void>((resolve) => setTimeout(resolve, delay)),
+  secs: (delay: number) => Sleep.msecs(delay * 1000),
+} as const;
 
 /**
  * Checks for an error within an async function.
