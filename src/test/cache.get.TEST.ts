@@ -1,6 +1,19 @@
-import { expect, FileSystemCache, basePath } from './common';
+import {
+  BasePath,
+  FileSystemCache,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  it,
+} from './common';
 
-describe('get', function () {
+describe('get', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
+
   it('file not exist on the file-system', async () => {
     const cache = new FileSystemCache({ basePath });
     const res = await cache.get('foo');
@@ -14,52 +27,33 @@ describe('get', function () {
     });
   });
 
-  it('reads a stored values (various types)', (done) => {
+  it('reads a stored values (various types)', async () => {
     const cache1 = new FileSystemCache({ basePath });
     const cache2 = new FileSystemCache({ basePath });
-    cache1.set('text', 'my value');
-    cache1.set('number', 123);
-    cache1.set('object', { foo: 456 }).then(() => {
-      cache2
-        .get('text')
-        .then((result) => expect(result).to.equal('my value'))
-        .then(() => {
-          cache2.get('number').then((result) => expect(result).to.equal(123));
-        })
-        .then(() => {
-          cache2.get('object').then((result) => expect(result).to.eql({ foo: 456 }));
-        })
-        .finally(() => done())
-        .catch((err) => console.error(err));
-    });
+    await cache1.set('text', 'my value');
+    await cache1.set('number', 123);
+    await cache1.set('object', { foo: 456 });
+
+    expect(await cache2.get('text')).to.eql('my value');
+    expect(await cache2.get('number')).to.eql(123);
+    expect(await cache2.get('object')).to.eql({ foo: 456 });
   });
 
-  it('reads a stored date', (done) => {
+  it('reads a stored date', async () => {
     const cache1 = new FileSystemCache({ basePath });
     const cache2 = new FileSystemCache({ basePath });
     const now = new Date();
-    cache1.set('date', now).then(() => {
-      cache2
-        .get('date')
-        .then((result) => {
-          expect(result).to.eql(now);
-          done();
-        })
-        .catch((err) => console.error(err));
-    });
+    await cache1.set('date', now);
+    expect(await cache2.get('date')).to.eql(now);
   });
 
-  describe('getSync', function () {
-    it('reads a value synchonously', (done) => {
+  describe('getSync', () => {
+    it('reads a value synchonously', async () => {
       const cache = new FileSystemCache({ basePath });
       const now = new Date();
-      cache
-        .set('date', now)
-        .then(() => {
-          expect(cache.getSync('date')).to.eql(now);
-          done();
-        })
-        .catch((err) => console.error(err));
+
+      await cache.set('date', now);
+      expect(cache.getSync('date')).to.eql(now);
     });
 
     it('returns a default value synchonously', () => {

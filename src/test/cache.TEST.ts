@@ -1,8 +1,23 @@
-import { FileSystemCache, Util, basePath, expect, fs, fsPath, type t } from './common';
-
-const BASE_PATH = fsPath.resolve(basePath);
+import {
+  BasePath,
+  FileSystemCache,
+  Util,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  fs,
+  fsPath,
+  it,
+  type t,
+} from './common';
 
 describe('FileSystemCache', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
+
   describe('constructor', () => {
     it('defaults', () => {
       const cache = new FileSystemCache();
@@ -81,7 +96,7 @@ describe('FileSystemCache', () => {
       const test = (hash: t.HashAlgorithm) => {
         const key = 'foo';
         const cache = new FileSystemCache({ basePath, hash });
-        const path = `${BASE_PATH}/${Util.hash(hash, key)}`;
+        const path = `${basePath}/${Util.hash(hash, key)}`;
         expect(cache.path(key)).to.equal(path);
       };
 
@@ -95,7 +110,7 @@ describe('FileSystemCache', () => {
         const key = 'foo';
         const ns = [1, 2];
         const cache = new FileSystemCache({ basePath, ns, hash });
-        const path = `${BASE_PATH}/${Util.hash(hash, ns)}-${Util.hash(hash, key)}`;
+        const path = `${basePath}/${Util.hash(hash, ns)}-${Util.hash(hash, key)}`;
         expect(cache.path(key)).to.equal(path);
       };
 
@@ -107,7 +122,7 @@ describe('FileSystemCache', () => {
     it('returns a path with a file extension', () => {
       const test = (hash: t.HashAlgorithm) => {
         const key = 'foo';
-        const path = `${BASE_PATH}/${Util.hash(hash, key)}.styl`;
+        const path = `${basePath}/${Util.hash(hash, key)}.styl`;
         let cache;
         cache = new FileSystemCache({ basePath, hash, extension: 'styl' });
         expect(cache.path(key)).to.equal(path);
@@ -123,18 +138,14 @@ describe('FileSystemCache', () => {
   });
 
   describe('ensureBasePath()', () => {
-    it('creates the base path', (done) => {
+    it('creates the base path', async () => {
       const cache = new FileSystemCache({ basePath });
       expect(fs.existsSync(cache.basePath)).to.equal(false);
       expect(cache.basePathExists).not.to.equal(true);
-      cache
-        .ensureBasePath()
-        .then(() => {
-          expect(cache.basePathExists).to.equal(true);
-          expect(fs.existsSync(cache.basePath)).to.equal(true);
-          done();
-        })
-        .catch((err) => console.error(err));
+
+      await cache.ensureBasePath();
+      expect(cache.basePathExists).to.equal(true);
+      expect(fs.existsSync(cache.basePath)).to.equal(true);
     });
   });
 });

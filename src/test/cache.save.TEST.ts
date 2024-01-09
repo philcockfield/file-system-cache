@@ -1,6 +1,21 @@
-import { expectError, FileSystemCache, fs, expect, basePath } from './common';
+import {
+  BasePath,
+  FileSystemCache,
+  afterAll,
+  beforeEach,
+  deleteTmpDir,
+  describe,
+  expect,
+  expectError,
+  fs,
+  it,
+} from './common';
 
-describe('save', function () {
+describe('save', () => {
+  const basePath = BasePath.random();
+  beforeEach(() => deleteTmpDir(basePath));
+  afterAll(() => deleteTmpDir(basePath));
+
   it('throws if items not valid', async () => {
     const cache = new FileSystemCache({ basePath });
 

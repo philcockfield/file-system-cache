@@ -1,4 +1,3 @@
-#!/usr/bin/env ts-node
 import { crypto, fs, fsPath } from '../src/common';
 
 const HashUnionType = {
