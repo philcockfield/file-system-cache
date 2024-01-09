@@ -8,6 +8,7 @@
     "build": "tsc",
     "prepublish": "npm test && rm -rf ./lib && npm run build",
     "gen:hashtype": "ts-node-esm -T ./script.ts/generate-hashtype.ts"
+    "clean": "tsx ./script.ts/clean.ts"
   },
   "dependencies": {
     "@types/ramda": "0.29.9",
