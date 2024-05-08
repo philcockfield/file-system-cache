@@ -32,7 +32,7 @@
     "lib/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --clean --dts --format esm --out-dir lib --treeshake",
+    "build": "tsup src/index.ts --clean --minify --dts --format esm --out-dir lib --treeshake",
     "format": "prettier ./src --write",
     "gen:hashtype": "tsx ./script.ts/generate-hashtype.ts",
     "prepublish": "npm test && npm run build",
