@@ -1,9 +1,11 @@
 import { expect } from 'chai';
 import { FileSystemCache } from '..';
-import { Util, crypto, fs, fsPath, type t } from '../common';
+import { Util, crypto, fsPath, type t } from '../common';
 
 export { afterAll, afterEach, beforeAll, beforeEach, describe, it } from 'vitest';
-export { FileSystemCache, Util, crypto, expect, fs, fsPath, type t };
+export { FileSystemCache, Util, crypto, expect, fsPath, type t };
+
+import * as fse from 'fs-extra/esm';
 
 export const BasePath = {
   root: './.tmp',
@@ -16,7 +18,7 @@ export const BasePath = {
 
 export const deleteTmpDir = async (basePath?: string) => {
   const path = fsPath.resolve(basePath || BasePath.root);
-  fs.removeSync(path);
+  fse.removeSync(path);
 };
 
 export const Sleep = {
@@ -47,8 +49,6 @@ export async function expectError(fn: () => Promise<any>, message?: string) {
       return error;
     }
   }
-  const msg = message
-    ? `Promise should fail with error message '${message || ''}'`
-    : 'Promise should fail with error';
+  const msg = message ? `Promise should fail with error message '${message || ''}'` : 'Promise should fail with error';
   return expect(undefined).to.be.a('Error', msg);
 }

@@ -1,4 +1,6 @@
-import { R, Util, fs, hashAlgorithms, type t } from './common';
+import * as fs from 'node:fs';
+import * as fse from 'fs-extra/esm';
+import { R, Util, hashAlgorithms, type t } from './common/index';
 
 /**
  * A cache that read/writes to a specific part of the file-system.
@@ -66,14 +68,14 @@ export class FileSystemCache {
    * @param {string} key: The key of the cache item.
    */
   public fileExists(key: string) {
-    return fs.pathExists(this.path(key));
+    return fse.pathExists(this.path(key));
   }
 
   /**
    * Ensure that the base path exists.
    */
   public async ensureBasePath() {
-    if (!this.basePathExists) await fs.ensureDir(this.basePath);
+    if (!this.basePathExists) await fse.ensureDir(this.basePath);
     this.basePathExists = true;
   }
 
@@ -96,7 +98,7 @@ export class FileSystemCache {
    */
   public getSync(key: string, defaultValue?: any) {
     const path = this.path(key);
-    return fs.existsSync(path) ? Util.toGetValue(fs.readJsonSync(path)) : defaultValue;
+    return fs.existsSync(path) ? Util.toGetValue(fse.readJsonSync(path)) : defaultValue;
   }
 
   /**
@@ -108,7 +110,7 @@ export class FileSystemCache {
     const path = this.path(key);
     ttl = typeof ttl === 'number' ? ttl : this.ttl;
     await this.ensureBasePath();
-    await fs.outputFile(path, Util.toJson(value, ttl));
+    await fse.outputFile(path, Util.toJson(value, ttl));
     return { path };
   }
 
@@ -120,7 +122,7 @@ export class FileSystemCache {
    */
   public setSync(key: string, value: any, ttl?: number) {
     ttl = typeof ttl === 'number' ? ttl : this.ttl;
-    fs.outputFileSync(this.path(key), Util.toJson(value, ttl));
+    fse.outputFileSync(this.path(key), Util.toJson(value, ttl));
     return this;
   }
 
@@ -129,7 +131,7 @@ export class FileSystemCache {
    * @param {string} key: The key of the cache item.
    */
   public remove(key: string) {
-    return fs.remove(this.path(key));
+    return fse.remove(this.path(key));
   }
 
   /**
@@ -137,7 +139,7 @@ export class FileSystemCache {
    */
   public async clear() {
     const paths = await Util.filePathsP(this.basePath, this.ns);
-    await Promise.all(paths.map((path) => fs.remove(path)));
+    await Promise.all(paths.map((path) => fse.remove(path)));
     console.groupEnd();
   }
 
@@ -145,9 +147,7 @@ export class FileSystemCache {
    * Saves several items to the cache in one operation.
    * @param {array} items: An array of objects of the form { key, value }.
    */
-  public async save(
-    input: ({ key: string; value: any } | null | undefined)[],
-  ): Promise<{ paths: string[] }> {
+  public async save(input: ({ key: string; value: any } | null | undefined)[]): Promise<{ paths: string[] }> {
     type Item = { key: string; value: any };
     let items = (Array.isArray(input) ? input : [input]) as Item[];
 
@@ -166,9 +166,7 @@ export class FileSystemCache {
 
     if (items.length === 0) return { paths: [] };
 
-    const paths = await Promise.all(
-      items.map(async (item) => (await this.set(item.key, item.value)).path),
-    );
+    const paths = await Promise.all(items.map(async (item) => (await this.set(item.key, item.value)).path));
 
     return { paths };
   }
@@ -179,9 +177,7 @@ export class FileSystemCache {
   public async load(): Promise<{ files: { path: string; value: any }[] }> {
     const paths = await Util.filePathsP(this.basePath, this.ns);
     if (paths.length === 0) return { files: [] };
-    const files = await Promise.all(
-      paths.map(async (path) => ({ path, value: await Util.getValueP(path) })),
-    );
+    const files = await Promise.all(paths.map(async (path) => ({ path, value: await Util.getValueP(path) })));
     return { files };
   }
 }
