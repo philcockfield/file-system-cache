@@ -1,13 +1,4 @@
-import {
-  BasePath,
-  FileSystemCache,
-  afterAll,
-  beforeEach,
-  deleteTmpDir,
-  describe,
-  expect,
-  it,
-} from './common';
+import { BasePath, FileSystemCache, afterAll, beforeEach, deleteTmpDir, describe, expect, it } from './common';
 
 describe('get', () => {
   const basePath = BasePath.random();

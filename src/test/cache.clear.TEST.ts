@@ -1,14 +1,6 @@
-import {
-  BasePath,
-  FileSystemCache,
-  afterAll,
-  beforeEach,
-  deleteTmpDir,
-  describe,
-  expect,
-  fs,
-  it,
-} from './common';
+import * as fs from 'node:fs';
+
+import { BasePath, FileSystemCache, afterAll, beforeEach, deleteTmpDir, describe, expect, it } from './common';
 
 describe('clear', () => {
   const basePath = BasePath.random();

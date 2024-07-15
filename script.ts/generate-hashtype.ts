@@ -1,4 +1,6 @@
-import { crypto, fs, fsPath } from '../src/common';
+import * as fs from 'node:fs';
+
+import { crypto, fsPath } from '../src/common';
 
 const HashUnionType = {
   /**

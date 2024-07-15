@@ -7,11 +7,12 @@ import {
   deleteTmpDir,
   describe,
   expect,
-  fs,
   fsPath,
   it,
   type t,
 } from './common';
+
+import * as fs from 'node:fs';
 
 describe('FileSystemCache', () => {
   const basePath = BasePath.random();

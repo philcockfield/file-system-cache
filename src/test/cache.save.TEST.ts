@@ -1,3 +1,5 @@
+import * as fs from 'node:fs';
+
 import {
   BasePath,
   FileSystemCache,
@@ -7,7 +9,6 @@ import {
   describe,
   expect,
   expectError,
-  fs,
   it,
 } from './common';
 

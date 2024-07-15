@@ -1,5 +1,8 @@
+import { pathExists, readJson, removeSync } from 'fs-extra/esm';
+import * as fs from 'node:fs';
+import * as fsp from 'node:fs/promises';
 import { type t } from '../common.t';
-import { R, crypto, fs, fsPath } from './libs';
+import { R, crypto, fsPath } from './libs';
 
 export const isNothing = (value: any) => R.isNil(value) || R.isEmpty(value);
 export const isString = R.is(String);
@@ -28,8 +31,8 @@ export const readFileSync = (path: string) => {
 };
 
 export const filePathsP = async (basePath: string, ns: string): Promise<string[]> => {
-  if (!(await fs.pathExists(basePath))) return [];
-  return (await fs.readdir(basePath))
+  if (!(await pathExists(basePath))) return [];
+  return (await fsp.readdir(basePath))
     .filter(Boolean)
     .filter((name) => (ns ? name.startsWith(ns) : true))
     .filter((name) => (!ns ? !name.includes('-') : true))
@@ -57,14 +60,14 @@ export const hashExists = (algorithm: t.HashAlgorithm) => {
  * Retrieve a value from the given path.
  */
 export async function getValueP(path: string, defaultValue?: any) {
-  const exists = await fs.pathExists(path);
+  const exists = await pathExists(path);
   if (!exists) return defaultValue;
   try {
-    return toGetValue(await fs.readJson(path));
+    return toGetValue(await readJson(path));
   } catch (error: any) {
     if (error.code === 'ENOENT') return defaultValue;
     if (error.message === 'Cache item has expired.') {
-      fs.removeSync(path);
+      removeSync(path);
       return defaultValue;
     }
     throw new Error(`Failed to read cache value at: ${path}. ${error.message}`);

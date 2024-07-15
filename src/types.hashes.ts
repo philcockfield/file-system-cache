@@ -3,8 +3,8 @@
  * See:
  *    - generator:  script.ts/generate-hashtype.ts
  *    - command:    yarn run gen:hashtype
- */    
-export type HashAlgorithm = 
+ */
+export type HashAlgorithm =
   | 'RSA-MD5'
   | 'RSA-RIPEMD160'
   | 'RSA-SHA1'
