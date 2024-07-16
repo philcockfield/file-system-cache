@@ -15,6 +15,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
+## [2.4.7] - 2024-07-16
+#### Changed
+- revert to bundle that supports `require('file-system-cache')` on patch release semver
+  prior to major update version for ESM build.
+
+
+
 ## [2.4.5] - 2024-07-16
 #### Added
 #### Changed
