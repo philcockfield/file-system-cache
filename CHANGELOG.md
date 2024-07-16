@@ -2,7 +2,9 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] - YYYY-MM-DD
+
+
+## [next] - YYYY-MM-DD
 #### Added
 #### Changed
 #### Deprecated
@@ -12,11 +14,25 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
-## [next] - YYYY-MM-DD
+## [3.0.0] - 2024-07-16
+#### Changed
+- converted to ESM (thanks to @ndelangen on PR#47)
+
+
+
+## [2.4.7] - 2024-07-16
+#### Fixed
+- revert to bundle that supports `require('file-system-cache')` on patch-release 
+  version number prior to re-releasing the ESM build on the next major version (see 3.0).
+
+
+
+## [2.4.5] - 2024-07-16
 #### Added
 #### Changed
 - switched testing framework from `mocha` to `vitest`
 - switched `ts-node` to `tsx`
+- converted to ESM (thanks to @ndelangen on PR#47)
 #### Deprecated
 #### Removed
 #### Fixed
