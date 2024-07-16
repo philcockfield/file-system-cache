@@ -4,8 +4,6 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 
 
-
-
 ## [next] - YYYY-MM-DD
 #### Added
 #### Changed
@@ -15,10 +13,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
-## [2.4.7] - 2024-07-16
+
+## [3.0.0] - 2024-07-16
 #### Changed
-- revert to bundle that supports `require('file-system-cache')` on patch release semver
-  prior to major update version for ESM build.
+- converted to ESM (thanks to @ndelangen on PR#47)
+
+
+
+## [2.4.7] - 2024-07-16
+#### Fixed
+- revert to bundle that supports `require('file-system-cache')` on patch-release 
+  version number prior to re-releasing the ESM build on the next major version (see 3.0).
 
 
 
