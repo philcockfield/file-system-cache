@@ -2,7 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased] - YYYY-MM-DD
+
+
+
+
+## [next] - YYYY-MM-DD
 #### Added
 #### Changed
 #### Deprecated
@@ -11,12 +15,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 #### Security
 
 
-
-## [next] - YYYY-MM-DD
+## [2.4.5] - 2024-07-16
 #### Added
 #### Changed
 - switched testing framework from `mocha` to `vitest`
 - switched `ts-node` to `tsx`
+- converted to ESM (thanks to @ndelangen on PR#47)
 #### Deprecated
 #### Removed
 #### Fixed
