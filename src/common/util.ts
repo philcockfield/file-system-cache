@@ -87,7 +87,7 @@ export const toGetValue = (data: any) => {
  * Stringify a value into JSON.
  */
 export const toJson = (value: any, ttl: number) =>
-  JSON.stringify({ value, type: R.type(value), created: new Date(), ttl });
+  JSON.stringify({ value, type: R.type(value), created: new Date().getTime(), ttl });
 
 /**
  * Check's a cache item to see if it has expired.
