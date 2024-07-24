@@ -1,6 +1,6 @@
 {
   "name": "file-system-cache",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.1",
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "keywords": [
     "cache",
