@@ -1,6 +1,6 @@
 {
   "name": "file-system-cache",
-  "version": "3.0.0",
+  "version": "3.0.0-alpha.7",
   "description": "A super-fast, promise-based cache that reads and writes to the file-system.",
   "keywords": [
     "cache",
@@ -19,20 +19,22 @@
     "url": "https://github.com/philcockfield"
   },
   "type": "module",
+  "main": "./lib/index.cjs",
+  "module": "./lib/index.js",
   "exports": {
     ".": {
       "types": "./lib/index.d.ts",
-      "import": "./lib/index.js"
+      "import": "./lib/index.js",
+      "require": "./lib/index.cjs"
     },
     "./package.json": "./package.json"
   },
-  "main": "./lib/index.js",
   "files": [
     "README.md",
     "lib/**"
   ],
   "scripts": {
-    "build": "tsup src/index.ts --clean --minify --dts --format esm --out-dir lib --treeshake",
+    "build": "tsup",
     "format": "prettier ./src --write",
     "gen:hashtype": "tsx ./script.ts/generate-hashtype.ts",
     "prepublish": "npm test && npm run build",
