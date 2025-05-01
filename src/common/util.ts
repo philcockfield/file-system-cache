@@ -59,7 +59,7 @@ export const hashExists = (algorithm: t.HashAlgorithm) => {
 /**
  * Retrieve a value from the given path.
  */
-export async function getValueP(path: string, defaultValue?: any) {
+export async function getValueP<T = any>(path: string, defaultValue?: T): Promise<T | undefined> {
   const exists = await pathExists(path);
   if (!exists) return defaultValue;
   try {
@@ -77,17 +77,26 @@ export async function getValueP(path: string, defaultValue?: any) {
 /**
  * Format value structure.
  */
-export const toGetValue = (data: any) => {
+export const toGetValue = <T = any>(data: StoredValue<T>): T | undefined => {
   if (isExpired(data)) return undefined;
-  if (data.type === 'Date') return new Date(data.value);
+  if (data.type === 'Date') return new Date(data.value as string) as T;
   return data.value;
 };
+
+interface StoredValue<T = any> {
+  value: T;
+  type: ReturnType<typeof R.type>;
+  created: Date,
+  ttl: number
+}
 
 /**
  * Stringify a value into JSON.
  */
-export const toJson = (value: any, ttl: number) =>
-  JSON.stringify({ value, type: R.type(value), created: new Date(), ttl });
+export const toJson = (value: any, ttl: number) => {
+  const obj: StoredValue = { value, type: R.type(value), created: new Date(), ttl };
+  return JSON.stringify(obj);
+}
 
 /**
  * Check's a cache item to see if it has expired.

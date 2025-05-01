@@ -86,7 +86,7 @@ export class FileSystemCache {
    * @return File contents, or
    *         undefined if the file does not exist.
    */
-  public get(key: string, defaultValue?: any) {
+  public get<T = any>(key: string, defaultValue?: T): Promise<T | undefined> {
     return Util.getValueP(this.path(key), defaultValue);
   }
 
@@ -96,7 +96,7 @@ export class FileSystemCache {
    * @param defaultValue: Optional. A default value to return if the value does not exist in cache.
    * @return the cached value, or undefined.
    */
-  public getSync(key: string, defaultValue?: any) {
+  public getSync<T = any>(key: string, defaultValue?: T): T | undefined {
     const path = this.path(key);
     return fs.existsSync(path) ? Util.toGetValue(fse.readJsonSync(path)) : defaultValue;
   }
